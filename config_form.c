@@ -68,10 +68,11 @@ config_form(mooshak_ctx_t **ctx) {
 
     *ctx = mooshak_init(outbuff);
     if (!mooshak_isinit(*ctx)) {
-        fprintf(stderr, mooshak_getlasterror(*ctx));
+        fprintf(stderr, "%s\n", mooshak_getlasterror(*ctx));
         return -1;
     }
 
+    mooshak_getcontest(*ctx);
 
     /* Contest */
     printf("Contest: ");
