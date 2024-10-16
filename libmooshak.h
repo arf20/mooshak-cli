@@ -29,6 +29,9 @@ mooshak_ctx_t *mooshak_init(const char *baseurl);
 
 int mooshak_isinit(const mooshak_ctx_t *ctx);
 
+/* before login */
+char **mooshak_getcontest(mooshak_ctx_t *ctx);
+
 void mooshak_deinit(mooshak_ctx_t *ctx);
 
 const char *mooshak_getlasterror(mooshak_ctx_t *ctx);

@@ -65,6 +65,25 @@ mem_write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
     return realsize;
 }
 
+char *
+get_refresh_url(const char *str) {
+    const char *url_beg = NULL, *url_end = NULL;
+    if (!(url_beg = strstr(str, "URL=")))
+        return NULL;
+
+    url_beg += 4;
+
+    if (!(url_end = strchr(url_beg, '"')))
+        return NULL;
+
+    int url_len = url_end - url_beg;
+
+    char *url = malloc(url_len + 1);
+    strncpy(url, url_beg, url_len);
+    url[url_len] = '\0';
+    return url;
+}
+
 mooshak_ctx_t *
 mooshak_init(const char *baseurl) {
     mooshak_ctx_t *ctx = malloc(sizeof(struct mooshak_ctx_s));
@@ -74,7 +93,7 @@ mooshak_init(const char *baseurl) {
 
     ctx->curl = curl_easy_init();
     if (!ctx->curl) {
-        ctx->lasterr = "Error curl_easy_init\n";
+        ctx->lasterr = "Error curl_easy_init";
         return ctx;
     }
 
@@ -96,33 +115,20 @@ mooshak_init(const char *baseurl) {
 
     #ifdef _DEBUG_
     curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
-    printf("===GET %s %ld\n", baseurl, http_code);
+    printf("===GET %s -> %ld\n", baseurl, http_code);
     #endif
     
     if (res != CURLE_OK) {
-        ctx->lasterr = "Error performing service discovery\n";
+        ctx->lasterr = "Error performing service discovery";
         ctx->laststat = res;
         return ctx;
     }
 
-    /*   extract URL= field */
-    const char *disc_url_beg = NULL, *disc_url_end = NULL;
-    if (!(disc_url_beg = strstr(ctx->resbuff.memory, "URL="))) {
-        ctx->lasterr = "Service discovery failed, URL= not found\n";
-        return ctx;
+    /*   extract refresh URL field */
+    char *disc_url = get_refresh_url(ctx->resbuff.memory);
+    if (!disc_url) {
+        ctx->lasterr = "Error discovering service url";
     }
-
-    disc_url_beg += 4;
-
-    if (!(disc_url_end = strchr(disc_url_beg, '"'))) {
-        ctx->lasterr = "Service discovery failed, URL= invalid\n";
-        return ctx;
-    }
-
-    int disc_url_len = disc_url_end - disc_url_beg;
-
-    char *disc_url = malloc(disc_url_len + 1);
-    strncpy(disc_url, disc_url_beg, disc_url_len);
 
     #ifdef _DEBUG_
     printf("==discovered url: %s\n", disc_url);
@@ -136,14 +142,14 @@ mooshak_init(const char *baseurl) {
 
     #ifdef _DEBUG_
     curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
-    printf("===GET %s %ld\n", disc_url, http_code);
+    printf("===GET %s -> %ld\n", disc_url, http_code);
     #endif 
 
     if (res != CURLE_OK) {
         ctx->lasterr = "Error performing endpoint discovery\n";
         ctx->laststat = res;
         return ctx;
-    } 
+    }
 
     /* get endpoint (3xx redirect Location header)*/
     curl_easy_getinfo(ctx->curl, CURLINFO_REDIRECT_URL, &ctx->endpoint);
@@ -152,7 +158,6 @@ mooshak_init(const char *baseurl) {
     printf("==endpoint: %s\n", ctx->endpoint);
     #endif
 
-
     free(disc_url);
     return ctx;
 }
@@ -160,6 +165,26 @@ mooshak_init(const char *baseurl) {
 int
 mooshak_isinit(const mooshak_ctx_t *ctx) {
     return ctx->init;
+}
+
+char **
+mooshak_getcontest(mooshak_ctx_t *ctx) {
+    /* ===== login page - contest discovery */
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, ctx->endpoint);
+
+    CURLcode res = curl_easy_perform(ctx->curl);
+
+    #ifdef _DEBUG_
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", disc_url, http_code);
+    #endif 
+
+    if (res != CURLE_OK) {
+        ctx->lasterr = "Error performing endpoint discovery\n";
+        ctx->laststat = res;
+        return ctx;
+    }
+
 }
 
 void
