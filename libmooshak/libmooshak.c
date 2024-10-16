@@ -91,7 +91,8 @@ get_refresh_url(const char *str) {
     return url;
 }
 
-char *append_args(char *dst, const char *src) {
+char *
+append_args(char *dst, const char *src) {
     size_t dstlen = strlen(dst);
     const char *args = strchr(src, '?');
     size_t argslen = strlen(args);
@@ -100,6 +101,17 @@ char *append_args(char *dst, const char *src) {
     dst[dstlen + argslen] = '\0';
     return dst;
 }
+
+void
+rstrip(char *s) {
+    char *e = s + strlen(s) - 1;
+    while (e > s) {
+        if (*e != ' ') break;
+        *e = '\0';
+        e--;
+    }
+}
+
 
 mooshak_ctx_t *
 mooshak_init(const char *baseurl) {
@@ -282,6 +294,7 @@ mooshak_getcontests(mooshak_ctx_t *ctx) {
                     }
 
                     contests[contestcount] = strdup(contbuf);
+                    rstrip(contests[contestcount]);
                     contestcount++;
                 }
             }
