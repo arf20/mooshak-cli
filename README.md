@@ -2,7 +2,24 @@
 
 A command-line interface for [Mooshak](https://mooshak.dcc.fc.up.pt/)
 
+## Build
+
+Just
+`make`
+
+Only libcurl required
+
+## Run
+
+`./mooshak-cli/mooshak-cli`
+
+### Options
+
+ - -c: Configuration generation form (asks for host, user, password, etc)
+
 ## API-ish
+
+Sort of adhoc-documenting the mooshak endpoints and parameters
 
 ```
 get_endpoint: GET /~mooshak/cgi-bin/execute -> 302 for endpoint in Location header i.e. /~mooshak/cgi-bin/execute/1604585587794234
