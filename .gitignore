@@ -1,3 +1,6 @@
 .vscode/
-mooshak-cli
+mooshak-cli/mooshak-cli
+libmooshak/*.o
+libmooshak/*.a
+mooshak-cli/*.o
 mooshak.conf
