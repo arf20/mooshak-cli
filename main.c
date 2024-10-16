@@ -25,6 +25,7 @@
 
 #include "libmooshak.h"
 #include "config_form.h"
+#include "shell.h"
 
 
 void
@@ -47,7 +48,7 @@ main(int argc, char **argv) {
 
     } else if (argc == 2 && strcmp(argv[1], "-c") == 0) {
         config_form(&ctx);
-        shell();
+        shell(ctx);
     } else {
         usage(argv[0]);
         return 1;

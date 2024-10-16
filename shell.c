@@ -20,4 +20,11 @@
 
 */
 
+#include "shell.h"
 
+#include "libmooshak.h"
+
+int
+shell(mooshak_ctx_t *ctx) {
+    return 0;
+}

@@ -27,6 +27,8 @@ typedef struct mooshak_ctx_s mooshak_ctx_t;
 /* libmooshak initilization - must call before anything else */
 mooshak_ctx_t *mooshak_init(const char *baseurl);
 
+int mooshak_isinit(const mooshak_ctx_t *ctx);
+
 void mooshak_deinit(mooshak_ctx_t *ctx);
 
 const char *mooshak_getlasterror(mooshak_ctx_t *ctx);

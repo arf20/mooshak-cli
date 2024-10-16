@@ -1,7 +1,7 @@
 PROJECT := mooshak-cli
 CC := gcc
-CFLAGS := -Wall -pedantic -g -O0
-LDFLAGS := -lbsd
+CFLAGS := -Wall -pedantic -g -O0 -D_DEBUG_
+LDFLAGS := -lbsd -lcurl
 
 SRC := $(wildcard *.c)
 
