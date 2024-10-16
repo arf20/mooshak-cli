@@ -1,15 +1,14 @@
-PROJECT := mooshak-cli
-CC := gcc
-CFLAGS := -Wall -pedantic -g -O0 -D_DEBUG_
-LDFLAGS := -lbsd -lcurl
+APPLICATION := mooshak-cli
+LIBRARY := libmooshak
 
-SRC := $(wildcard *.c)
+$(APPLICATION)/$(APPLICATION): $(LIBRARY)/$(LIBRARY).a
+	$(MAKE) -C $(APPLICATION)/
 
-all: $(PROJECT)
-
-$(PROJECT): $(SRC)
-	$(CC) $(CFLAGS) -o $(PROJECT) *.c $(LDFLAGS)
+$(LIBRARY)/$(LIBRARY).a:
+	$(MAKE) -C $(LIBRARY)/
 
 .PHONY: clean
 clean:
-	rm $(PROJECT)
+	$(MAKE) -C $(APPLICATION)/ clean
+	$(MAKE) -C $(LIBRARY)/ clean
+

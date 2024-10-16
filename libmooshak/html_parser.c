@@ -1,6 +1,6 @@
 /*
 
-    mooshak-cli: A command-line interface for Mooshak
+    libmooshak: Mooshak API-ish interface libray
     Copyright (C) 2024 Angel Ruiz Fernandez <a.ruizfernandez@um.es>
 
     This program is free software: you can redistribute it and/or modify
@@ -16,11 +16,15 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+    html_parser.c: 
+
 */
 
-#ifndef _CONFIG_FORM_H
-#define _CONFIG_FORM_H
+#include "html_parser.h"
 
-int config_form();
+#include <string.h>
 
-#endif /* _CONFIG_FORM_H */
+char *
+html_ingest_tag(char *html) {
+    return NULL;
+}
