@@ -24,7 +24,58 @@
 
 #include <string.h>
 
+void
+html_preprocess(char *html) {
+    while (*html) {
+        if (*html == '\n')
+            *html = ' ';
+        html++;
+    }
+}
+
 char *
-html_ingest_tag(char *html) {
-    return NULL;
+html_ingest_starttag(char *html, char *tagbuf, size_t tagbufsize) {
+    *tagbuf = '\0';
+
+    char *start = strchr(html, '<');
+    if (start == NULL) return NULL;
+
+    if (start[1] == '/')
+        return strchr(start, '>') + 1;
+
+    char *attr = strchr(start, ' ');
+
+    char *end = strchr(start, '>');
+    if (end == NULL) return NULL;
+
+    
+    int len;
+    if (attr && attr < end)
+        len = attr - start - 1;
+    else
+        len = end - start - 1;
+
+    if (len >= tagbufsize - 1)
+        len = end - start - 3;
+
+    strncpy(tagbuf, start + 1, len);
+    tagbuf[len] = '\0';
+
+    return end + 1;
+}
+
+char *
+html_ingest_contents(char *html, char *contbuf, size_t contbufsize) {
+    *contbuf = '\0';
+
+    char *end = strchr(html, '<');
+    if (end == NULL) return NULL;
+
+    int len = end - html;
+    if (len + 1 >= contbufsize)
+        len = contbufsize - 1;
+    strncpy(contbuf, html, len);
+    contbuf[len] = '\0';
+
+    return html;
 }

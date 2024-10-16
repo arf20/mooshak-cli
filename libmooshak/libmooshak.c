@@ -28,12 +28,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "html_parser.h"
+
 
 typedef struct {
     char *memory;
     size_t size;
     size_t off;
 } buff_t;
+
 
 struct mooshak_ctx_s {
     int init;
@@ -194,7 +197,7 @@ mooshak_isinit(const mooshak_ctx_t *ctx) {
 }
 
 char **
-mooshak_getcontest(mooshak_ctx_t *ctx) {
+mooshak_getcontests(mooshak_ctx_t *ctx) {
     /* ===== login page url discovery */
     curl_easy_setopt(ctx->curl, CURLOPT_URL, (const char*)ctx->endpoint);
 
@@ -250,10 +253,45 @@ mooshak_getcontest(mooshak_ctx_t *ctx) {
         return NULL;
     }
 
-    puts(ctx->resbuff.memory);
+    char *html = ctx->resbuff.memory;
+
+    html_preprocess(html);
+
+    char tagbuf[16];
+    char contbuf[256];
+    int selectcount = 0, optioncount = 0;
+
+    char **contests = malloc(sizeof(char*)*2);
+    int contestsize = 2, contestcount = 0;
+
+    while ((html = html_ingest_starttag(html, tagbuf, 16))) {
+        if (strlen(tagbuf) > 0) {
+            if (strcmp(tagbuf, "select") == 0) {
+                selectcount++;
+                optioncount = 0;
+            }
+            else if (strcmp(tagbuf, "option") == 0) {
+                optioncount++;
+                if ((selectcount > 2) && (optioncount > 1)) {
+                    html = html_ingest_contents(html, contbuf, 256);
+
+                    if (contestcount + 1 > contestsize - 1) {
+                        contests = 
+                            realloc(contests, (sizeof(char*)*contestcount) + 1);
+                        contestsize = contestcount;
+                    }
+
+                    contests[contestcount] = strdup(contbuf);
+                    contestcount++;
+                }
+            }
+        }
+    }
+
+    contests[contestcount] = NULL;
 
     free(login_url);
-    return NULL;
+    return contests;
 }
 
 void

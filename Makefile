@@ -1,14 +1,20 @@
 APPLICATION := mooshak-cli
 LIBRARY := libmooshak
 
-$(APPLICATION)/$(APPLICATION): $(LIBRARY)/$(LIBRARY).a
-	$(MAKE) -C $(APPLICATION)/
+all: $(APPLICATION)/$(APPLICATION)
 
-$(LIBRARY)/$(LIBRARY).a:
+$(LIBRARY)/$(LIBRARY).a: $(LIBRARY)/*.c
 	$(MAKE) -C $(LIBRARY)/
+
+$(APPLICATION)/$(APPLICATION): $(APPLICATION)/*.c $(LIBRARY)/$(LIBRARY).a
+	$(MAKE) -C $(APPLICATION)/
 
 .PHONY: clean
 clean:
 	$(MAKE) -C $(APPLICATION)/ clean
 	$(MAKE) -C $(LIBRARY)/ clean
+
+.PHONY: run
+run:
+	./$(APPLICATION)/$(APPLICATION)
 

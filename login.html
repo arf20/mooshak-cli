@@ -1,0 +1,160 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Mooshak</title>
+<link
+rel="icon"
+href="../../icons/mooshak-16.png"
+type="image/png">
+<link
+rel="shortcut icon"
+href="../../icons/mooshak-16.png">
+<link
+rel="stylesheet"
+href="../../styles/base.css"
+type="text/css">
+
+<script language="Javascript" type="text/javascript">
+function isToplevel() {
+return window.parent == window;
+}
+
+function execute(menu) {
+for(var i=0; i < menu.options.length; i++)
+with(menu.options[i])
+if(selected) {
+window.open(value,'_self');
+menu.options[i].selected=false;
+}
+menu.options[0].selected=true;
+}
+
+
+</script>
+</head>
+<body onLoad="if(! isToplevel()) return window.open('153308761377497?relogin','_top');">
+
+<style>
+SELECT.Menu, OPTION.Button, OPTION.ItemOn, OPTION.ItemOff{
+background: #CCFFCC;
+color:      #666666;
+font-size:  75%;
+
+}
+
+OPTION.ItemOff {
+color:      LightGrey;
+}
+
+</style>
+<div style="width: 95%; padding: 0pt; margin: 0pt;">
+<select class="Menu" name="Language" onChange="execute(this)">
+<option class="Button" value="">[ Language ]</option>
+<option title="" class="ItemOn" value="153308761377497?config+language+en">English</option>
+<option title="" class="ItemOn" value="153308761377497?config+language+pt">Portuguese</option>
+<option title="" class="ItemOff" value="">(Spanish)</option>
+<option title="" class="ItemOn" value="153308761377497?config+language+ar">Arabic</option>
+</select><select class="Menu" name="Style" onChange="execute(this)">
+<option class="Button" value="">[ Style ]</option>
+<option title="" class="ItemOff" value="">(Standard)</option>
+<option title="" class="ItemOn" value="153308761377497?config+style+grayscale">Grayscale</option>
+</select>
+</div>
+<center>
+
+<form   method="post"
+action="153308761377497">
+<input type="hidden" name="command"   value="login">
+<input type="hidden" name="arguments" value="">
+
+<p align="center"><img src="../../omp.png"
+alt="Olimpiada Murciana de Programaci&oacute;n"></p>
+
+<table  border="2"
+cellpadding="10"
+cellspacing="2">
+
+<tr><th id="Base">
+<h2>Bienvenido a Mooshak</h2>
+<table
+cellpadding="10"
+cellspacing="0"
+border="0"
+width="50%">
+
+
+<tr>
+<th>Concurso</th>
+<td colspan="2">
+<select size="1" name="contest" onChange="this.form.submit();" class="Normal"><option selected value="">
+<option value="AED1_25_Tema1">AED1, 24/25. Actividad Tema 1
+<option value="AEDII_2324_AR">AEDII_2324_AR
+<option value="AEDII_2324_Back">AEDII_2324_Back
+<option value="AED1_25_Practica">AED1, 24/25. Práctica
+</select></td>
+</tr>
+<tr>
+<th>Usuario</th>
+<td colspan="2">
+<input type="text" name="user"></td>
+</tr>
+<tr>
+<th>Clave</th>
+<td colspan="2">
+<input type="password" name="password">
+</td>
+</tr>
+
+<tr>
+<th colspan="4">
+<font color="red">Mooshak requires cookies for authentication<br>Untested browser - Mooshak may not work properly<br>Tested browser include: Firefox, Mozilla, Opera</font>
+</th>
+</tr>
+<tr>
+<th>
+<input type="submit" class="Button" value="Entrar">
+</th>
+<th>
+<input type="reset" class="Button" value="Borrar">
+</th>
+<th>
+<input
+type="button"
+class="Button"
+value="Registrarse"
+ disabled 
+OnClick="window.open('153308761377497?register','_self');"
+>
+</th>
+<th>
+<input type="button" class="Button" value="Invitado"
+OnClick="window.open('153308761377497?guest','_self');"
+>
+</th>
+
+</table>
+</th>
+</table>
+
+<div style="position: absolute; bottom: 0; left: 0;">
+<table border="0" width="100%" style="font-size: x-small; color: gray;">
+<tr>
+<td align="left">zp&#64;ncc&#46;up&#46;pt<br><font size="1">Traducido al espa&ntilde;ol por: Gin&eacute;s Garc&iacute;a Mateos (ginesgm&#64;um.es)</font></code>
+
+</td>
+<td align="center"></td>
+<td align="right">
+&#169; Department of Computer Science - Faculty of Science - University of Porto
+</td>
+</tr>
+</div>
+
+</script>
+
+
+</center>
+</body>
+</html>
+
+
+

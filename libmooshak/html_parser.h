@@ -21,7 +21,11 @@
 #ifndef _HTML_PARSER_H
 #define _HTML_PARSER_H
 
-char *html_ingest_tag(char *html);
+#include <stddef.h>
+
+void html_preprocess(char *html);
+char *html_ingest_starttag(char *html, char *tagbuf, size_t tagbufsize);
+char *html_ingest_contents(char *html, char *contbuf, size_t contbufsize);
 
 #endif /* _HTML_PARSER_H */
 

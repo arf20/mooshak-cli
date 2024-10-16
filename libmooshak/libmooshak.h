@@ -37,7 +37,7 @@ void mooshak_deinit(mooshak_ctx_t *ctx);
 const char *mooshak_getlasterror(mooshak_ctx_t *ctx);
 
 /* no login required */
-const char **mooshak_getcontests(mooshak_ctx_t *ctx);
+char **mooshak_getcontests(mooshak_ctx_t *ctx);
 
 
 #endif /* _LIBMOOSHAK_H */

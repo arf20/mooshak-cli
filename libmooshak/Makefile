@@ -1,19 +1,20 @@
 TARGET := libmooshak.a
-OBJ := libmooshak.o
-CC := gcc
-CFLAGS := -Wall -pedantic -g -O0 -D_DEBUG_
-LDFLAGS := -lbsd -lcurl
 
 SRC := $(wildcard *.c)
+OBJ := $(patsubst %.c,%.o,$(SRC))
+
+CC := gcc
+CFLAGS := -Wall -pedantic -g -O0 -D_DEBUG_
+LDFLAGS := 
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
 	ar rcs $(TARGET) $(OBJ)
 
-$(OBJ): $(SRC)
-	$(CC) -c $(CFLAGS) *.c $(LDFLAGS)
+%.o: %.c
+	$(CC) -c $(CFLAGS) $<
 
 .PHONY: clean
 clean:
-	rm -f $(TARGET) *.o
+	rm -f $(TARGET) $(OBJ)
