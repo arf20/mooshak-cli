@@ -341,21 +341,15 @@ mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
         "command=login&arguments=&contest=%s&user=%s&password=%s",
         contest, user, password);
 
-    /* Request content-type header */
-    struct curl_slist *chunk = NULL;
-    chunk = curl_slist_append(chunk, "Content-Type: application/x-www-form-urlencoded");
-
     curl_easy_setopt(ctx->curl, CURLOPT_POST, 1);
-    curl_easy_setopt(ctx->curl, CURLOPT_HTTPHEADER, chunk);
     curl_easy_setopt(ctx->curl, CURLOPT_URL, ctx->endpoint);
     curl_easy_setopt(ctx->curl, CURLOPT_POSTFIELDS, loginquery);
     ctx->laststat = curl_easy_perform(ctx->curl);
     ctx->resbuff.off = 0; /* reset buff offset pointer */
 
     /* reset */
-    curl_easy_setopt(ctx->curl, CURLOPT_POST, 0);
-    curl_easy_setopt(ctx->curl, CURLOPT_HTTPHEADER, NULL);
     curl_easy_setopt(ctx->curl, CURLOPT_POSTFIELDS, NULL);
+    curl_easy_setopt(ctx->curl, CURLOPT_HTTPGET, 1);
 
     #ifdef _DEBUG_
     long http_code;
