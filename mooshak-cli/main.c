@@ -22,9 +22,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 #include "libmooshak.h"
 #include "config_form.h"
+#include "config_parser.h"
 #include "shell.h"
 
 
@@ -42,10 +44,20 @@ main(int argc, char **argv) {
         "This is free software, and you are welcome to redistribute it\n"
         "under certain conditions; <http://gnu.org/licenses/gpl.html>\n\n");
 
-    mooshak_ctx_t *ctx = NULL;    
+    mooshak_ctx_t *ctx = NULL;
+    config_t cfg = { 0 };
 
     if (argc == 1) {
+        int r = config_read_parse("mooshak.conf", &cfg);
+        if (r < 0) {
+            fprintf(stderr, "Cannot read configuration: %s\n", strerror(errno));
+            return 1;
+        } else if (r > 0) {
+            fprintf(stderr, "Invalid configuration\n");
+            return 1;
+        }
 
+        config_free(&cfg);
     } else if (argc == 2 && strcmp(argv[1], "-c") == 0) {
         config_form(&ctx);
         shell(ctx);

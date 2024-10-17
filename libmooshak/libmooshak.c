@@ -39,12 +39,12 @@ typedef struct {
 
 
 struct mooshak_ctx_s {
-    int init;
-    char *endpoint;
-    CURL *curl;
-    char *lasterr;
-    CURLcode laststat;
-    buff_t resbuff;
+    int init;           /* Init success => nonzero */
+    char *endpoint;     /* Discovered endpoint with the numbery */
+    CURL *curl;         /* CURL context */
+    char *lasterr;      /* Last lib error str */
+    CURLcode laststat;  /* Last CURL return val */
+    buff_t resbuff;     /* Response buffer */
 };
 
 
@@ -288,8 +288,8 @@ mooshak_getcontests(mooshak_ctx_t *ctx) {
                     html = html_ingest_contents(html, contbuf, 256);
 
                     if (contestcount + 1 > contestsize - 1) {
-                        contests = 
-                            realloc(contests, (sizeof(char*)*contestcount) + 1);
+                        contests = realloc(contests, 
+                            (sizeof(char*) * (contestcount + 2)));
                         contestsize = contestcount;
                     }
 
@@ -314,6 +314,8 @@ mooshak_deinit(mooshak_ctx_t *ctx) {
         free(ctx->endpoint);
     if (ctx->curl)
         curl_easy_cleanup(ctx->curl);
+    if (ctx->resbuff.memory)
+        free(ctx->resbuff.memory);
     free(ctx);
     curl_global_cleanup();
 }

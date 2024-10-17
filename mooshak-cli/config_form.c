@@ -30,14 +30,8 @@
 
 #include "libmooshak.h"
 
-const char *
-get_line(char *dst, size_t s) {
-    const char *r = fgets(dst, 1024, stdin);
-    int len = strlen(dst);
-    if (len > 0)
-        dst[len-1] = '\0'; /* strip \n */
-    return r;
-}
+#include "utils.h"
+
 
 int
 config_form(mooshak_ctx_t **ctx) {
@@ -52,19 +46,19 @@ config_form(mooshak_ctx_t **ctx) {
 
     /* Endpoint URL */
     printf("Scheme [https(://)]: ");
-    if (*get_line(inbuff, 1024) != '\0')
+    if (*get_line(inbuff, 1024, stdin) != '\0')
         strlcat(outbuff, inbuff, 1024);
     else
         strlcat(outbuff, "https", 1024);
     strlcat(outbuff, "://", 1024);
 
     printf("Hostname [mooshak.inf.um.es]: ");
-    if (*get_line(inbuff, 1024) != '\0')
+    if (*get_line(inbuff, 1024, stdin) != '\0')
         strlcat(outbuff, inbuff, 1024);
     else
         strlcat(outbuff, "mooshak.inf.um.es", 1024);
     
-    fprintf(cfgfile, "endpoint=%s\n", outbuff);
+    fprintf(cfgfile, "baseurl=%s\n", outbuff);
 
 
     *ctx = mooshak_init(outbuff);
@@ -79,18 +73,18 @@ config_form(mooshak_ctx_t **ctx) {
     for (int i = 0; contests[i] != NULL; i++)
         printf("  #%d: %s\n", i, contests[i]);
     printf("Contest #: ");
-    get_line(inbuff, 1024);
+    get_line(inbuff, 1024, stdin);
     int contestidx = atoi(inbuff);
     fprintf(cfgfile, "contest=%s\n", contests[contestidx]);
 
     /* User */
     printf("User: ");
-    get_line(inbuff, 1024);
+    get_line(inbuff, 1024, stdin);
     fprintf(cfgfile, "user=%s\n", inbuff);
 
     /* Password */
     printf("Password: ");
-    get_line(inbuff, 1024);
+    get_line(inbuff, 1024, stdin);
     fprintf(cfgfile, "password=%s\n", inbuff);
 
 
