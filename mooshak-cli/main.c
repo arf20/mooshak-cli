@@ -57,10 +57,35 @@ main(int argc, char **argv) {
             return 1;
         }
 
+        ctx = mooshak_init(cfg.baseurl);
+        if (!mooshak_isinit(ctx)) {
+            fprintf(stderr, "Error initializing libmooshak: %s\n",
+                mooshak_getlasterror(ctx));
+            mooshak_deinit(ctx);
+            return 1;
+        }
+
+        if (mooshak_login_contest(ctx, cfg.user, cfg.user, cfg.contest) < 0) {
+            fprintf(stderr, "Error logging in: %s\n",
+                mooshak_getlasterror(ctx));
+            mooshak_deinit(ctx);
+            return 1;
+        }
+
+        printf("Logged in.\n");
+
+        shell(ctx);
+
+        if (mooshak_logoff(ctx) < 0) {
+            fprintf(stderr, "Error logging off: %s\n",
+                mooshak_getlasterror(ctx));
+            mooshak_deinit(ctx);
+            return 1;
+        }
+
         config_free(&cfg);
     } else if (argc == 2 && strcmp(argv[1], "-c") == 0) {
         config_form(&ctx);
-        shell(ctx);
     } else {
         usage(argv[0]);
         return 1;
