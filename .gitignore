@@ -4,3 +4,4 @@ libmooshak/*.o
 libmooshak/*.a
 mooshak-cli/*.o
 mooshak.conf
+valgrind-out.txt
