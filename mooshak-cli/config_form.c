@@ -69,6 +69,7 @@ config_form(mooshak_ctx_t **ctx) {
 
     /* Contest */
     char **contests = mooshak_getcontests(*ctx);
+    
     printf("Contests:\n");
     for (int i = 0; contests[i] != NULL; i++)
         printf("  #%d: %s\n", i, contests[i]);
@@ -80,16 +81,27 @@ config_form(mooshak_ctx_t **ctx) {
     /* User */
     printf("User: ");
     get_line(inbuff, 1024, stdin);
-    fprintf(cfgfile, "user=%s\n", inbuff);
+    char *user = strdup(inbuff);
+    fprintf(cfgfile, "user=%s\n", user);
 
     /* Password */
     printf("Password: ");
     get_line(inbuff, 1024, stdin);
-    fprintf(cfgfile, "password=%s\n", inbuff);
+    char *password = strdup(inbuff);
+    fprintf(cfgfile, "password=%s\n", password);
 
+
+    /* Validate */
+    if (mooshak_login_contest(*ctx, user, password, contests[contestidx]) < 0) {
+        fprintf(stderr, "Error performing login\n");
+        return -1;
+    }
 
     /* clean up */
     fclose(cfgfile);
+
+    free(user);
+    free(password);
 
     for (int i = 0; contests[i] != NULL; i++)
         free(contests[i]);

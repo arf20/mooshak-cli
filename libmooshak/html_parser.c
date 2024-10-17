@@ -24,6 +24,12 @@
 
 #include <string.h>
 
+char *
+skip_spaces(char *str) {
+    while (*str && (*str == ' ')) str++;
+    return str;
+}
+
 void
 html_preprocess(char *html) {
     while (*html) {
@@ -61,15 +67,54 @@ html_ingest_starttag(char *html, char *tagbuf, size_t tagbufsize) {
     strncpy(tagbuf, start + 1, len);
     tagbuf[len] = '\0';
 
-    return end + 1;
+    return start + len + 2;
+}
+
+char *
+html_ingest_attribute(char *html, char *keybuf, size_t keybufsize,
+    char *valbuf, size_t valbufsize)
+{
+    html = skip_spaces(html);
+
+    char *end = strchr(html, '>');
+    if (!end) return NULL;
+    char *attrsep = strstr(html, "=\"");
+    if (!attrsep || (attrsep > end)) return end;
+
+
+    int keylen = attrsep - html;
+    if (keylen + 1 >= keybufsize) keylen = keybufsize - 1;
+    strncpy(keybuf, html, keylen);
+    keybuf[keylen] = '\0';
+
+    char *val = attrsep + 2;
+
+    char *attrend = strchr(val, '\"');
+    if (!attrend || (attrend > end))
+        return NULL;
+    
+    int vallen = attrend - val;
+
+    if (vallen + 1 > valbufsize)
+        vallen = valbufsize - 1;
+
+    strncpy(valbuf, val, vallen);
+    valbuf[vallen] = '\0';
+
+    return attrend + 1;
 }
 
 char *
 html_ingest_contents(char *html, char *contbuf, size_t contbufsize) {
     *contbuf = '\0';
 
+    char *begin = strchr(html, '>');
+
     char *end = strchr(html, '<');
     if (end == NULL) return NULL;
+
+    if (begin && (begin < end))
+        html = begin + 1;
 
     int len = end - html;
     if (len + 1 >= contbufsize)
@@ -77,5 +122,5 @@ html_ingest_contents(char *html, char *contbuf, size_t contbufsize) {
     strncpy(contbuf, html, len);
     contbuf[len] = '\0';
 
-    return html;
+    return html + len;
 }

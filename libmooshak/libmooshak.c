@@ -112,6 +112,15 @@ rstrip(char *s) {
     }
 }
 
+void
+strreplace(char *s, char f, char t) {
+    while (*s) {
+        if (*s == f)
+            *s = t;
+        s++;
+    }
+}
+
 
 mooshak_ctx_t *
 mooshak_init(const char *baseurl) {
@@ -140,7 +149,7 @@ mooshak_init(const char *baseurl) {
     /* ===== Service discovery request */
     curl_easy_setopt(ctx->curl, CURLOPT_URL, baseurl);
 
-    CURLcode res = curl_easy_perform(ctx->curl);
+    ctx->laststat = curl_easy_perform(ctx->curl);
 
     ctx->resbuff.off = 0; /* reset buff offset pointer */
 
@@ -149,9 +158,8 @@ mooshak_init(const char *baseurl) {
     printf("===GET %s -> %ld\n", baseurl, http_code);
     #endif
     
-    if (res != CURLE_OK) {
+    if (ctx->laststat != CURLE_OK) {
         ctx->lasterr = "Error performing service discovery";
-        ctx->laststat = res;
         return ctx;
     }
 
@@ -169,16 +177,15 @@ mooshak_init(const char *baseurl) {
     /* ===== Endpoint discovery request */
     curl_easy_setopt(ctx->curl, CURLOPT_URL, disc_url);
 
-    res = curl_easy_perform(ctx->curl);
+    ctx->laststat = curl_easy_perform(ctx->curl);
 
     #ifdef _DEBUG_
     curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
     printf("===GET %s -> %ld\n", disc_url, http_code);
     #endif 
 
-    if (res != CURLE_OK) {
+    if (ctx->laststat != CURLE_OK) {
         ctx->lasterr = "Error performing endpoint discovery\n";
-        ctx->laststat = res;
         return ctx;
     }
 
@@ -187,7 +194,6 @@ mooshak_init(const char *baseurl) {
     curl_easy_getinfo(ctx->curl, CURLINFO_REDIRECT_URL, &endpoint_tmp);
     if (!endpoint_tmp) {
         ctx->lasterr = "Error getting redirect location\n";
-        ctx->laststat = res;
         return ctx;
     }
 
@@ -208,105 +214,6 @@ mooshak_isinit(const mooshak_ctx_t *ctx) {
     return ctx->init;
 }
 
-char **
-mooshak_getcontests(mooshak_ctx_t *ctx) {
-    /* ===== login page url discovery */
-    curl_easy_setopt(ctx->curl, CURLOPT_URL, (const char*)ctx->endpoint);
-
-    CURLcode res = curl_easy_perform(ctx->curl);
-
-    ctx->resbuff.off = 0; /* reset buff offset pointer */
-
-    #ifdef _DEBUG_
-    long http_code;
-    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
-    printf("===GET %s -> %ld\n", ctx->endpoint, http_code);
-    #endif 
-
-    if (res != CURLE_OK) {
-        ctx->lasterr = "Error performing login page URL discovery\n";
-        ctx->laststat = res;
-        return NULL;
-    }
-
-    /* get login page endpoint (refresh url) */
-    char *login_url = get_refresh_url(ctx->resbuff.memory);
-    if (!login_url) {
-        ctx->lasterr = "Error getting login refresh url\n";
-        ctx->laststat = res;
-        return NULL;
-    }
-
-    if (login_url[0] != 'h') {
-        char *tmp = strdup(ctx->endpoint);
-        tmp = append_args(tmp, login_url);
-        free(login_url);
-        login_url = tmp;
-    }
-
-    #ifdef _DEBUG_
-    printf("==login page url: %s\n", login_url);
-    #endif
-
-    /* ===== contest discovery via login page */
-    curl_easy_setopt(ctx->curl, CURLOPT_URL, login_url);
-
-    res = curl_easy_perform(ctx->curl);
-
-    #ifdef _DEBUG_
-    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
-    printf("===GET %s -> %ld\n", login_url, http_code);
-    #endif
-
-    if (res != CURLE_OK) {
-        ctx->lasterr = "Error performing login page contest discovery\n";
-        ctx->laststat = res;
-        free(login_url);
-        return NULL;
-    }
-
-    char *html = ctx->resbuff.memory;
-
-    html_preprocess(html);
-
-    char tagbuf[16];
-    char contbuf[256];
-    int selectcount = 0, optioncount = 0;
-
-    char **contests = malloc(sizeof(char*)*2);
-    int contestsize = 2, contestcount = 0;
-
-    while ((html = html_ingest_starttag(html, tagbuf, 16))) {
-        if (strlen(tagbuf) > 0) {
-            if (strcmp(tagbuf, "select") == 0) {
-                selectcount++;
-                optioncount = 0;
-            }
-            else if (strcmp(tagbuf, "option") == 0) {
-                optioncount++;
-                if ((selectcount > 2) && (optioncount > 1)) {
-                    html = html_ingest_contents(html, contbuf, 256);
-
-                    if (contestcount + 1 > contestsize - 1) {
-                        contests = realloc(contests, 
-                            (sizeof(char*) * (contestcount + 2)));
-                        contestsize = contestcount;
-                    }
-
-                    contests[contestcount] = strdup(contbuf);
-                    rstrip(contests[contestcount]);
-                    contestcount++;
-                }
-            }
-        }
-    }
-
-    contests[contestcount] = NULL;
-
-    free(login_url);
-    return contests;
-}
-
 void
 mooshak_deinit(mooshak_ctx_t *ctx) {
     if (!ctx) return;
@@ -325,4 +232,130 @@ mooshak_getlasterror(mooshak_ctx_t *ctx) {
     return ctx->lasterr;
 }
 
+char **
+mooshak_getcontests(mooshak_ctx_t *ctx) {
+    /* ===== login page url discovery */
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, (const char*)ctx->endpoint);
 
+    ctx->laststat = curl_easy_perform(ctx->curl);
+
+    ctx->resbuff.off = 0; /* reset buff offset pointer */
+
+    #ifdef _DEBUG_
+    long http_code;
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", ctx->endpoint, http_code);
+    #endif 
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing login page URL discovery\n";
+        return NULL;
+    }
+
+    /* get login page endpoint (refresh url) */
+    char *login_url = get_refresh_url(ctx->resbuff.memory);
+    if (!login_url) {
+        ctx->lasterr = "Error getting login refresh url\n";
+        return NULL;
+    }
+
+    if (login_url[0] != 'h') {
+        char *tmp = strdup(ctx->endpoint);
+        tmp = append_args(tmp, login_url);
+        free(login_url);
+        login_url = tmp;
+    }
+
+    #ifdef _DEBUG_
+    printf("==login page url: %s\n", login_url);
+    #endif
+
+    /* ===== contest discovery via login page */
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, login_url);
+
+    ctx->laststat = curl_easy_perform(ctx->curl);
+
+    #ifdef _DEBUG_
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", login_url, http_code);
+    #endif
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing login page contest discovery\n";
+        free(login_url);
+        return NULL;
+    }
+
+    char *html = ctx->resbuff.memory;
+
+    html_preprocess(html);
+
+    char tag[16], attrkey[16], value[256];
+    char contbuf[256];
+    int selectcount = 0, optioncount = 0;
+
+    char **contests = malloc(sizeof(char*)*2);
+    int contestsize = 2, contestcount = 0;
+
+    while ((html = html_ingest_starttag(html, tag, 16))) {
+        if (strlen(tag) > 0) {
+            if (strcmp(tag, "select") == 0) {
+                selectcount++;
+                optioncount = 0;
+            }
+            else if (strcmp(tag, "option") == 0) {
+                optioncount++;
+                if ((selectcount > 2) && (optioncount > 1)) {
+                    html = html_ingest_attribute(html, attrkey, 16, value, 256);
+                    html = html_ingest_contents(html, contbuf, 256);
+
+                    if (contestcount + 1 > contestsize - 1) {
+                        contests = realloc(contests, 
+                            (sizeof(char*) * (contestcount + 2)));
+                        contestsize = contestcount;
+                    }
+
+                    contests[contestcount] = strdup(value);
+                    //rstrip(contests[contestcount]);
+                    contestcount++;
+                }
+            }
+        }
+    }
+
+    contests[contestcount] = NULL;
+
+    free(login_url);
+    return contests;
+}
+
+int
+mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
+    const char *password, char *contest)
+{
+    char loginquery[1024];
+
+    snprintf(loginquery, 1024,
+        "%s?command=login&arguments=&contest=%s&user=%s&password=%s",
+        ctx->endpoint, contest, user, password);
+    
+    strreplace(loginquery, ' ', '_');
+
+    printf("%s\n", loginquery);
+
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, ctx->endpoint);
+    //ctx->laststat = curl_easy_perform(ctx->curl);
+
+    #ifdef _DEBUG_
+    long http_code;
+    //curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", loginquery, http_code);
+    #endif
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing login\n";
+        return -1;
+    }
+
+    return 0;
+}

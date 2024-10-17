@@ -29,15 +29,15 @@ mooshak_ctx_t *mooshak_init(const char *baseurl);
 
 int mooshak_isinit(const mooshak_ctx_t *ctx);
 
-/* before login */
-char **mooshak_getcontest(mooshak_ctx_t *ctx);
-
 void mooshak_deinit(mooshak_ctx_t *ctx);
 
 const char *mooshak_getlasterror(mooshak_ctx_t *ctx);
 
-/* no login required */
+/* before login */
 char **mooshak_getcontests(mooshak_ctx_t *ctx);
+
+int mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
+    const char *password, char *contest);
 
 
 #endif /* _LIBMOOSHAK_H */
