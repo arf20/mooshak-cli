@@ -141,6 +141,7 @@ mooshak_init(const char *baseurl) {
     ctx->resbuff.size = 0;
     curl_easy_setopt(ctx->curl, CURLOPT_WRITEFUNCTION, mem_write_callback);
     curl_easy_setopt(ctx->curl, CURLOPT_WRITEDATA, (void*)&ctx->resbuff);
+    curl_easy_setopt(ctx->curl, CURLOPT_COOKIEJAR, "cookies.txt");
 
     /* set libmooshak useragent */
     curl_easy_setopt(ctx->curl, CURLOPT_USERAGENT, "libmooshak/0.0.1");
@@ -185,7 +186,7 @@ mooshak_init(const char *baseurl) {
     #endif 
 
     if (ctx->laststat != CURLE_OK) {
-        ctx->lasterr = "Error performing endpoint discovery\n";
+        ctx->lasterr = "Error performing endpoint discovery";
         return ctx;
     }
 
@@ -193,7 +194,7 @@ mooshak_init(const char *baseurl) {
     char *endpoint_tmp = NULL;
     curl_easy_getinfo(ctx->curl, CURLINFO_REDIRECT_URL, &endpoint_tmp);
     if (!endpoint_tmp) {
-        ctx->lasterr = "Error getting redirect location\n";
+        ctx->lasterr = "Error getting redirect location";
         return ctx;
     }
 
@@ -248,14 +249,14 @@ mooshak_getcontests(mooshak_ctx_t *ctx) {
     #endif 
 
     if (ctx->laststat != CURLE_OK) {
-        ctx->lasterr = "Error performing login page URL discovery\n";
+        ctx->lasterr = "Error performing login page URL discovery";
         return NULL;
     }
 
     /* get login page endpoint (refresh url) */
     char *login_url = get_refresh_url(ctx->resbuff.memory);
     if (!login_url) {
-        ctx->lasterr = "Error getting login refresh url\n";
+        ctx->lasterr = "Error getting login refresh url";
         return NULL;
     }
 
@@ -274,6 +275,7 @@ mooshak_getcontests(mooshak_ctx_t *ctx) {
     curl_easy_setopt(ctx->curl, CURLOPT_URL, login_url);
 
     ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0; /* reset buff offset pointer */
 
     #ifdef _DEBUG_
     curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
@@ -281,7 +283,7 @@ mooshak_getcontests(mooshak_ctx_t *ctx) {
     #endif
 
     if (ctx->laststat != CURLE_OK) {
-        ctx->lasterr = "Error performing login page contest discovery\n";
+        ctx->lasterr = "Error performing login page contest discovery";
         free(login_url);
         return NULL;
     }
@@ -336,24 +338,62 @@ mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
     char loginquery[1024];
 
     snprintf(loginquery, 1024,
-        "%s?command=login&arguments=&contest=%s&user=%s&password=%s",
-        ctx->endpoint, contest, user, password);
-    
-    strreplace(loginquery, ' ', '_');
+        "command=login&arguments=&contest=%s&user=%s&password=%s",
+        contest, user, password);
 
-    printf("%s\n", loginquery);
+    /* Request content-type header */
+    struct curl_slist *chunk = NULL;
+    chunk = curl_slist_append(chunk, "Content-Type: application/x-www-form-urlencoded");
 
+    curl_easy_setopt(ctx->curl, CURLOPT_POST, 1);
+    curl_easy_setopt(ctx->curl, CURLOPT_HTTPHEADER, chunk);
     curl_easy_setopt(ctx->curl, CURLOPT_URL, ctx->endpoint);
-    //ctx->laststat = curl_easy_perform(ctx->curl);
+    curl_easy_setopt(ctx->curl, CURLOPT_POSTFIELDS, loginquery);
+    ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0; /* reset buff offset pointer */
+
+    /* reset */
+    curl_easy_setopt(ctx->curl, CURLOPT_POST, 0);
+    curl_easy_setopt(ctx->curl, CURLOPT_HTTPHEADER, NULL);
+    curl_easy_setopt(ctx->curl, CURLOPT_POSTFIELDS, NULL);
 
     #ifdef _DEBUG_
     long http_code;
-    //curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
-    printf("===GET %s -> %ld\n", loginquery, http_code);
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===POST %s | %s -> %ld\n", ctx->endpoint, loginquery, http_code);
     #endif
 
     if (ctx->laststat != CURLE_OK) {
-        ctx->lasterr = "Error performing login\n";
+        ctx->lasterr = "Error performing login query POST request";
+        return -1;
+    }
+
+    if (strstr(ctx->resbuff.memory, "Invalid authentication")) {
+        ctx->lasterr = "Got 'Invalid authentication' message from server";
+        return -1;
+    }
+
+    /* It's probably a success I think */
+
+    return 0;
+}
+
+int
+mooshak_logoff(mooshak_ctx_t *ctx) {
+    char query[1024];
+    snprintf(query, 1024, "%s?logout", ctx->endpoint);
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, query);
+    ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0;
+
+    #ifdef _DEBUG_
+    long http_code;
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", query, http_code);
+    #endif
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing logout request";
         return -1;
     }
 

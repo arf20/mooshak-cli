@@ -39,5 +39,6 @@ char **mooshak_getcontests(mooshak_ctx_t *ctx);
 int mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
     const char *password, char *contest);
 
+int mooshak_logoff(mooshak_ctx_t *ctx);
 
 #endif /* _LIBMOOSHAK_H */

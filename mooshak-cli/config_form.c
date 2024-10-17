@@ -92,12 +92,18 @@ config_form(mooshak_ctx_t **ctx) {
 
 
     /* Validate */
+    printf("Checking credentials against server... ");
     if (mooshak_login_contest(*ctx, user, password, contests[contestidx]) < 0) {
         fprintf(stderr, "Error performing login\n");
-        return -1;
+    } else {
+        printf("success! (probably)\n");
     }
 
+    printf("Configuration written - exiting\n");
+
     /* clean up */
+    mooshak_logoff(*ctx);
+
     fclose(cfgfile);
 
     free(user);
