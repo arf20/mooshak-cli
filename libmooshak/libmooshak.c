@@ -179,6 +179,7 @@ mooshak_init(const char *baseurl) {
     curl_easy_setopt(ctx->curl, CURLOPT_URL, disc_url);
 
     ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0;
 
     #ifdef _DEBUG_
     curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
@@ -190,7 +191,7 @@ mooshak_init(const char *baseurl) {
         return ctx;
     }
 
-    /* get endpoint (3xx redirect Location header)*/
+    /* get endpoint (3xx redirect Location header) */
     char *endpoint_tmp = NULL;
     curl_easy_getinfo(ctx->curl, CURLINFO_REDIRECT_URL, &endpoint_tmp);
     if (!endpoint_tmp) {
@@ -204,7 +205,61 @@ mooshak_init(const char *baseurl) {
     printf("==endpoint: %s\n", ctx->endpoint);
     #endif
 
+    /* ===== config url discovery */
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, (const char*)ctx->endpoint);
+
+    ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0; /* reset buff offset pointer */
+
+    #ifdef _DEBUG_
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", ctx->endpoint, http_code);
+    #endif 
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing login page URL discovery";
+        return NULL;
+    }
+
+    /* get config endpoint (refresh url) */
+    char *config_url = get_refresh_url(ctx->resbuff.memory);
+    if (!config_url) {
+        ctx->lasterr = "Error getting login refresh url";
+        return NULL;
+    }
+
+    if (config_url[0] != 'h') {
+        char *tmp = strdup(ctx->endpoint);
+        tmp = append_args(tmp, config_url);
+        free(config_url);
+        config_url = tmp;
+    }
+
+    #ifdef _DEBUG_
+    printf("==config url: %s\n", config_url);
+    #endif
+
+    /* ===== config query  */
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, config_url);
+
+    ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0; /* reset buff offset pointer */
+
+    #ifdef _DEBUG_
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", config_url, http_code);
+    #endif
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing config query";
+        free(config_url);
+        return NULL;
+    }
+
+    /* done */
+
     free(disc_url);
+    free(config_url);
 
     ctx->init = 1;
     return ctx;
@@ -235,56 +290,20 @@ mooshak_getlasterror(mooshak_ctx_t *ctx) {
 
 char **
 mooshak_getcontests(mooshak_ctx_t *ctx) {
-    /* ===== login page url discovery */
-    curl_easy_setopt(ctx->curl, CURLOPT_URL, (const char*)ctx->endpoint);
+    /* ===== login page request  */
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, ctx->endpoint);
 
     ctx->laststat = curl_easy_perform(ctx->curl);
-
     ctx->resbuff.off = 0; /* reset buff offset pointer */
 
     #ifdef _DEBUG_
     long http_code;
     curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
     printf("===GET %s -> %ld\n", ctx->endpoint, http_code);
-    #endif 
-
-    if (ctx->laststat != CURLE_OK) {
-        ctx->lasterr = "Error performing login page URL discovery";
-        return NULL;
-    }
-
-    /* get login page endpoint (refresh url) */
-    char *login_url = get_refresh_url(ctx->resbuff.memory);
-    if (!login_url) {
-        ctx->lasterr = "Error getting login refresh url";
-        return NULL;
-    }
-
-    if (login_url[0] != 'h') {
-        char *tmp = strdup(ctx->endpoint);
-        tmp = append_args(tmp, login_url);
-        free(login_url);
-        login_url = tmp;
-    }
-
-    #ifdef _DEBUG_
-    printf("==login page url: %s\n", login_url);
-    #endif
-
-    /* ===== contest discovery via login page */
-    curl_easy_setopt(ctx->curl, CURLOPT_URL, login_url);
-
-    ctx->laststat = curl_easy_perform(ctx->curl);
-    ctx->resbuff.off = 0; /* reset buff offset pointer */
-
-    #ifdef _DEBUG_
-    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
-    printf("===GET %s -> %ld\n", login_url, http_code);
     #endif
 
     if (ctx->laststat != CURLE_OK) {
-        ctx->lasterr = "Error performing login page contest discovery";
-        free(login_url);
+        ctx->lasterr = "Error performing login page request";
         return NULL;
     }
 
@@ -327,13 +346,12 @@ mooshak_getcontests(mooshak_ctx_t *ctx) {
 
     contests[contestcount] = NULL;
 
-    free(login_url);
     return contests;
 }
 
 int
 mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
-    const char *password, char *contest)
+    const char *password, const char *contest)
 {
     char loginquery[1024];
 
@@ -368,6 +386,66 @@ mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
     }
 
     /* It's probably a success I think */
+
+    return 0;
+}
+
+int
+mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n) {
+    char params[1024];
+    snprintf(params, 1024,
+        "all_problems=true&page=0&problem=P004&type=submissions"
+        "&all_teams=true&lines=%d&time=5&command=listing",
+        n);
+
+    curl_easy_setopt(ctx->curl, CURLOPT_POST, 1);
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, ctx->endpoint);
+    curl_easy_setopt(ctx->curl, CURLOPT_POSTFIELDS, params);
+
+    ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0; /* reset buff offset pointer */
+
+    curl_easy_setopt(ctx->curl, CURLOPT_POSTFIELDS, NULL);
+    curl_easy_setopt(ctx->curl, CURLOPT_HTTPGET, 1);
+
+    #ifdef _DEBUG_
+    long http_code;
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===POST %s | %s -> %ld\n", ctx->endpoint, params, http_code);
+    #endif
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing sublist params query";
+        return -1;
+    }
+
+    return 0;
+}
+
+mooshak_submission_t **
+mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page) {
+    char listquery[1024];
+    snprintf(listquery, 1024,
+        "%s?listing&page=%d",
+        ctx->endpoint, page);
+
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, listquery);
+
+    ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0; /* reset buff offset pointer */
+
+    #ifdef _DEBUG_
+    long http_code;
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", listquery, http_code);
+    #endif
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing sublist params query";
+        return NULL;
+    }
+
+    puts(ctx->resbuff.memory);
 
     return 0;
 }

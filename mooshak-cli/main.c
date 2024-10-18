@@ -65,7 +65,7 @@ main(int argc, char **argv) {
             return 1;
         }
 
-        if (mooshak_login_contest(ctx, cfg.user, cfg.user, cfg.contest) < 0) {
+        if (mooshak_login_contest(ctx, cfg.user, cfg.password, cfg.contest) < 0) {
             fprintf(stderr, "Error logging in: %s\n",
                 mooshak_getlasterror(ctx));
             mooshak_deinit(ctx);
@@ -73,6 +73,8 @@ main(int argc, char **argv) {
         }
 
         printf("Logged in.\n");
+
+        mooshak_set_sublist_params(ctx, 200);
 
         shell(ctx);
 

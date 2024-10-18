@@ -24,7 +24,36 @@
 
 #include "libmooshak.h"
 
+#include "utils.h"
+
+#include <stdio.h>
+#include <string.h>
+
 int
 shell(mooshak_ctx_t *ctx) {
+    char cmd[1024];
+
+    printf("Type `help` for a list of commands\n");
+
+    while (1) {
+        printf("mooshak> ");
+        get_line(cmd, 1024, stdin);
+
+        if (strcmp(cmd, "h") == 0 || strcmp(cmd, "help") == 0) {
+            printf(
+                "  h|help:           print this message\n"
+                "  l|listsub:        list submissions\n"
+                "  q|quit:           logoff and quit\n"
+                
+            );
+        } else if (strcmp(cmd, "l") == 0 || strcmp(cmd, "listsub") == 0) {
+            mooshak_fetch_sublist(ctx, 1);
+        } else if (strcmp(cmd, "q") == 0 || strcmp(cmd, "quit") == 0) {
+            return 0;
+        }  else {
+            printf("?Unrecognized command\n");
+        }
+    }
+
     return 0;
 }

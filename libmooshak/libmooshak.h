@@ -24,6 +24,18 @@
 /* Opaque context object */
 typedef struct mooshak_ctx_s mooshak_ctx_t;
 
+/* Return types */
+typedef struct {
+    int id;
+    char *time;
+    char *country;
+    char *team;
+    char *problem;
+    char *language;
+    char *result;
+    char *state;
+} mooshak_submission_t;
+
 /* libmooshak initilization - must call before anything else */
 mooshak_ctx_t *mooshak_init(const char *baseurl);
 
@@ -37,7 +49,11 @@ const char *mooshak_getlasterror(mooshak_ctx_t *ctx);
 char **mooshak_getcontests(mooshak_ctx_t *ctx);
 
 int mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
-    const char *password, char *contest);
+    const char *password, const char *contest);
+
+int mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n);
+
+mooshak_submission_t **mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page);
 
 int mooshak_logoff(mooshak_ctx_t *ctx);
 
