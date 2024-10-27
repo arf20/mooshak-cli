@@ -1,0 +1,224 @@
+.TH "libmooshak.h" 3 "Mon Oct 28 2024" "libmooshak" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+libmooshak.h \- libmooshak library header interface  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <time\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBmooshak_submission_t\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBmooshak_ctx_s\fP \fBmooshak_ctx_t\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmooshak_ctx_t\fP * \fBmooshak_init\fP (const char *baseurl)"
+.br
+.RI "libmooshak initilization: must call before anything else "
+.ti -1c
+.RI "int \fBmooshak_isinit\fP (const \fBmooshak_ctx_t\fP *ctx)"
+.br
+.RI "Check if libmooshak context is initialized\&. "
+.ti -1c
+.RI "void \fBmooshak_deinit\fP (\fBmooshak_ctx_t\fP *ctx)"
+.br
+.RI "Free libmooshak context\&. "
+.ti -1c
+.RI "const char * \fBmooshak_getlasterror\fP (\fBmooshak_ctx_t\fP *ctx)"
+.br
+.RI "Get last libmooshak error string\&. "
+.ti -1c
+.RI "char ** \fBmooshak_getcontests\fP (\fBmooshak_ctx_t\fP *ctx)"
+.br
+.RI "Get available contests from server, before login\&. "
+.ti -1c
+.RI "int \fBmooshak_login_contest\fP (\fBmooshak_ctx_t\fP *ctx, const char *user, const char *password, const char *contest)"
+.br
+.RI "Login into a contest server with credentials\&. "
+.ti -1c
+.RI "int \fBmooshak_logoff\fP (\fBmooshak_ctx_t\fP *ctx)"
+.br
+.RI "Logout of server, prevents hanging sessions in server\&. "
+.ti -1c
+.RI "int \fBmooshak_set_sublist_params\fP (\fBmooshak_ctx_t\fP *ctx, int n)"
+.br
+.RI "Set submission listing parameters\&. "
+.ti -1c
+.RI "\fBmooshak_submission_t\fP ** \fBmooshak_fetch_sublist\fP (\fBmooshak_ctx_t\fP *ctx, int page)"
+.br
+.RI "Fetch submission list\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+libmooshak library header interface 
+
+
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBmooshak_ctx_s\fP \fBmooshak_ctx_t\fP"
+libmooshak opaque context type to which all calls refer to 
+.SH "Function Documentation"
+.PP 
+.SS "void mooshak_deinit (\fBmooshak_ctx_t\fP * ctx)"
+
+.PP
+Free libmooshak context\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP libmooshak context 
+.RE
+.PP
+
+.SS "\fBmooshak_submission_t\fP ** mooshak_fetch_sublist (\fBmooshak_ctx_t\fP * ctx, int page)"
+
+.PP
+Fetch submission list\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP libmooshak context 
+.br
+\fIpage\fP listing page of n size (mooshak_set_sublist_params) from newest to oldest 
+.RE
+.PP
+
+.SS "char ** mooshak_getcontests (\fBmooshak_ctx_t\fP * ctx)"
+
+.PP
+Get available contests from server, before login\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP libmooshak context 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+NULL-terminated array of NUL-terminated C-strings containing the names of the active available contests 
+.RE
+.PP
+
+.SS "const char * mooshak_getlasterror (\fBmooshak_ctx_t\fP * ctx)"
+
+.PP
+Get last libmooshak error string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP libmooshak context 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+inmutable C-string describing the last lib error 
+.RE
+.PP
+
+.SS "\fBmooshak_ctx_t\fP * mooshak_init (const char * baseurl)"
+
+.PP
+libmooshak initilization: must call before anything else 
+.PP
+\fBParameters\fP
+.RS 4
+\fIbaseurl\fP URL of mooshak server (schema + hostname + mooshak root) 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+new libmooshak context (must be freed when unused with mooshak_deinit) 
+.RE
+.PP
+
+.SS "int mooshak_isinit (const \fBmooshak_ctx_t\fP * ctx)"
+
+.PP
+Check if libmooshak context is initialized\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP libmooshak context 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+non-zero on init, zero on no init 
+.RE
+.PP
+
+.SS "int mooshak_login_contest (\fBmooshak_ctx_t\fP * ctx, const char * user, const char * password, const char * contest)"
+
+.PP
+Login into a contest server with credentials\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP libmooshak context 
+.br
+\fIuser\fP login username 
+.br
+\fIpassword\fP login password 
+.br
+\fIcontest\fP login into a contest (get with mooshak_getcontests) 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+non-zero on error 
+.RE
+.PP
+
+.SS "int mooshak_logoff (\fBmooshak_ctx_t\fP * ctx)"
+
+.PP
+Logout of server, prevents hanging sessions in server\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP libmooshak context 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+non-zero on error 
+.RE
+.PP
+
+.SS "int mooshak_set_sublist_params (\fBmooshak_ctx_t\fP * ctx, int n)"
+
+.PP
+Set submission listing parameters\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP libmooshak context 
+.br
+\fIn\fP number of submissions to fetch 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+non-zero on error 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libmooshak from the source code\&.

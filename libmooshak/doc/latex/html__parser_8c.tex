@@ -1,0 +1,57 @@
+\hypertarget{html__parser_8c}{}\doxysection{html\+\_\+parser.\+c File Reference}
+\label{html__parser_8c}\index{html\_parser.c@{html\_parser.c}}
+{\ttfamily \#include \char`\"{}html\+\_\+parser.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+Include dependency graph for html\+\_\+parser.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=235pt]{html__parser_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \mbox{\hyperlink{html__parser_8c_a3967de2b66d856887b2c6a2ac086ed87}{skip\+\_\+spaces}} (char $\ast$str)
+\item 
+void \mbox{\hyperlink{html__parser_8c_aea56585490ad84a137b976f0edc98191}{html\+\_\+preprocess}} (char $\ast$html)
+\item 
+char $\ast$ \mbox{\hyperlink{html__parser_8c_a23736c13d3ba4e92e6e6c13a38ca145c}{html\+\_\+ingest\+\_\+starttag}} (char $\ast$html, char $\ast$tagbuf, size\+\_\+t tagbufsize)
+\item 
+char $\ast$ \mbox{\hyperlink{html__parser_8c_a51a79db0f24744cbc8c59ea0ba2b3c17}{html\+\_\+ingest\+\_\+attribute}} (char $\ast$html, char $\ast$keybuf, size\+\_\+t keybufsize, char $\ast$valbuf, size\+\_\+t valbufsize)
+\item 
+char $\ast$ \mbox{\hyperlink{html__parser_8c_abedbc4cd7f0ea95b8978edc31047e28b}{html\+\_\+ingest\+\_\+contents}} (char $\ast$html, char $\ast$contbuf, size\+\_\+t contbufsize)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{html__parser_8c_a51a79db0f24744cbc8c59ea0ba2b3c17}\label{html__parser_8c_a51a79db0f24744cbc8c59ea0ba2b3c17}} 
+\index{html\_parser.c@{html\_parser.c}!html\_ingest\_attribute@{html\_ingest\_attribute}}
+\index{html\_ingest\_attribute@{html\_ingest\_attribute}!html\_parser.c@{html\_parser.c}}
+\doxysubsubsection{\texorpdfstring{html\_ingest\_attribute()}{html\_ingest\_attribute()}}
+{\footnotesize\ttfamily char $\ast$ html\+\_\+ingest\+\_\+attribute (\begin{DoxyParamCaption}\item[{char $\ast$}]{html,  }\item[{char $\ast$}]{keybuf,  }\item[{size\+\_\+t}]{keybufsize,  }\item[{char $\ast$}]{valbuf,  }\item[{size\+\_\+t}]{valbufsize }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{html__parser_8c_abedbc4cd7f0ea95b8978edc31047e28b}\label{html__parser_8c_abedbc4cd7f0ea95b8978edc31047e28b}} 
+\index{html\_parser.c@{html\_parser.c}!html\_ingest\_contents@{html\_ingest\_contents}}
+\index{html\_ingest\_contents@{html\_ingest\_contents}!html\_parser.c@{html\_parser.c}}
+\doxysubsubsection{\texorpdfstring{html\_ingest\_contents()}{html\_ingest\_contents()}}
+{\footnotesize\ttfamily char $\ast$ html\+\_\+ingest\+\_\+contents (\begin{DoxyParamCaption}\item[{char $\ast$}]{html,  }\item[{char $\ast$}]{contbuf,  }\item[{size\+\_\+t}]{contbufsize }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{html__parser_8c_a23736c13d3ba4e92e6e6c13a38ca145c}\label{html__parser_8c_a23736c13d3ba4e92e6e6c13a38ca145c}} 
+\index{html\_parser.c@{html\_parser.c}!html\_ingest\_starttag@{html\_ingest\_starttag}}
+\index{html\_ingest\_starttag@{html\_ingest\_starttag}!html\_parser.c@{html\_parser.c}}
+\doxysubsubsection{\texorpdfstring{html\_ingest\_starttag()}{html\_ingest\_starttag()}}
+{\footnotesize\ttfamily char $\ast$ html\+\_\+ingest\+\_\+starttag (\begin{DoxyParamCaption}\item[{char $\ast$}]{html,  }\item[{char $\ast$}]{tagbuf,  }\item[{size\+\_\+t}]{tagbufsize }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{html__parser_8c_aea56585490ad84a137b976f0edc98191}\label{html__parser_8c_aea56585490ad84a137b976f0edc98191}} 
+\index{html\_parser.c@{html\_parser.c}!html\_preprocess@{html\_preprocess}}
+\index{html\_preprocess@{html\_preprocess}!html\_parser.c@{html\_parser.c}}
+\doxysubsubsection{\texorpdfstring{html\_preprocess()}{html\_preprocess()}}
+{\footnotesize\ttfamily void html\+\_\+preprocess (\begin{DoxyParamCaption}\item[{char $\ast$}]{html }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{html__parser_8c_a3967de2b66d856887b2c6a2ac086ed87}\label{html__parser_8c_a3967de2b66d856887b2c6a2ac086ed87}} 
+\index{html\_parser.c@{html\_parser.c}!skip\_spaces@{skip\_spaces}}
+\index{skip\_spaces@{skip\_spaces}!html\_parser.c@{html\_parser.c}}
+\doxysubsubsection{\texorpdfstring{skip\_spaces()}{skip\_spaces()}}
+{\footnotesize\ttfamily char $\ast$ skip\+\_\+spaces (\begin{DoxyParamCaption}\item[{char $\ast$}]{str }\end{DoxyParamCaption})}
+

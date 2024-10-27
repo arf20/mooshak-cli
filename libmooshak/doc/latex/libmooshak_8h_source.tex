@@ -1,5 +1,5 @@
 \hypertarget{libmooshak_8h_source}{}\doxysection{libmooshak.\+h}
-
+\mbox{\hyperlink{libmooshak_8h}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 \textcolor{comment}{/*}}
 \DoxyCodeLine{2 \textcolor{comment}{}}
@@ -21,45 +21,43 @@
 \DoxyCodeLine{18 \textcolor{comment}{}}
 \DoxyCodeLine{19 \textcolor{comment}{*/}}
 \DoxyCodeLine{20 }
-\DoxyCodeLine{21 \textcolor{preprocessor}{\#ifndef \_LIBMOOSHAK\_H}}
-\DoxyCodeLine{22 \textcolor{preprocessor}{\#define \_LIBMOOSHAK\_H}}
-\DoxyCodeLine{23 }
-\DoxyCodeLine{24 \textcolor{comment}{/* Opaque context object */}}
-\DoxyCodeLine{25 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_s}} \mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}};}
-\DoxyCodeLine{26 }
-\DoxyCodeLine{27 \textcolor{comment}{/* Return types */}}
-\DoxyCodeLine{28 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
-\DoxyCodeLine{29     \textcolor{keywordtype}{int} id;}
-\DoxyCodeLine{30     \textcolor{keywordtype}{char} *time;}
-\DoxyCodeLine{31     \textcolor{keywordtype}{char} *country;}
-\DoxyCodeLine{32     \textcolor{keywordtype}{char} *team;}
-\DoxyCodeLine{33     \textcolor{keywordtype}{char} *problem;}
-\DoxyCodeLine{34     \textcolor{keywordtype}{char} *language;}
-\DoxyCodeLine{35     \textcolor{keywordtype}{char} *result;}
-\DoxyCodeLine{36     \textcolor{keywordtype}{char} *state;}
-\DoxyCodeLine{37 \} \mbox{\hyperlink{structmooshak__submission__t}{mooshak\_submission\_t}};}
-\DoxyCodeLine{38 }
-\DoxyCodeLine{39 \textcolor{comment}{/* libmooshak initilization -\/ must call before anything else */}}
-\DoxyCodeLine{40 \mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *mooshak\_init(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *baseurl);}
-\DoxyCodeLine{41 }
-\DoxyCodeLine{42 \textcolor{keywordtype}{int} mooshak\_isinit(\textcolor{keyword}{const} \mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
-\DoxyCodeLine{43 }
-\DoxyCodeLine{44 \textcolor{keywordtype}{void} mooshak\_deinit(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
-\DoxyCodeLine{45 }
-\DoxyCodeLine{46 \textcolor{keyword}{const} \textcolor{keywordtype}{char} *mooshak\_getlasterror(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
-\DoxyCodeLine{47 }
-\DoxyCodeLine{48 \textcolor{comment}{/* before login */}}
-\DoxyCodeLine{49 \textcolor{keywordtype}{char} **mooshak\_getcontests(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
-\DoxyCodeLine{50 }
-\DoxyCodeLine{51 \textcolor{keywordtype}{int} mooshak\_login\_contest(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *user,}
-\DoxyCodeLine{52     \textcolor{keyword}{const} \textcolor{keywordtype}{char} *password, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *contest);}
-\DoxyCodeLine{53 }
-\DoxyCodeLine{54 \textcolor{keywordtype}{int} mooshak\_set\_sublist\_params(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx, \textcolor{keywordtype}{int} n);}
-\DoxyCodeLine{55 }
-\DoxyCodeLine{56 \mbox{\hyperlink{structmooshak__submission__t}{mooshak\_submission\_t}} **mooshak\_fetch\_sublist(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx, \textcolor{keywordtype}{int} page);}
-\DoxyCodeLine{57 }
-\DoxyCodeLine{58 \textcolor{keywordtype}{int} mooshak\_logoff(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
-\DoxyCodeLine{59 }
-\DoxyCodeLine{60 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_LIBMOOSHAK\_H */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef \_LIBMOOSHAK\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define \_LIBMOOSHAK\_H}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{34 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_s}} \mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{39 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{40     \textcolor{keywordtype}{int} \mbox{\hyperlink{structmooshak__submission__t_a8300dfdc54f8760ea29845b16cf45781}{id}};             }
+\DoxyCodeLine{41     time\_t \mbox{\hyperlink{structmooshak__submission__t_a6a9bc6207f4f0d7ad7210dab16ef3b02}{time}};        }
+\DoxyCodeLine{42     \textcolor{keywordtype}{char} *\mbox{\hyperlink{structmooshak__submission__t_ab014de465ed0e4f2625ef7aebf9d0129}{country}};      }
+\DoxyCodeLine{43     \textcolor{keywordtype}{char} *\mbox{\hyperlink{structmooshak__submission__t_a0644d172045ec79274a758627d564749}{team}};         }
+\DoxyCodeLine{44     \textcolor{keywordtype}{char} *\mbox{\hyperlink{structmooshak__submission__t_a24c60a7f802b68558dff9297c24cf1e9}{problem}};      }
+\DoxyCodeLine{45     \textcolor{keywordtype}{char} *\mbox{\hyperlink{structmooshak__submission__t_ad67babe46bc4683224b8541cdb3747d1}{language}};     }
+\DoxyCodeLine{46     \textcolor{keywordtype}{char} *\mbox{\hyperlink{structmooshak__submission__t_a424061c9e4bbbf3b5e2a8c3d1bd1a45f}{result}};       }
+\DoxyCodeLine{47     \textcolor{keywordtype}{char} *\mbox{\hyperlink{structmooshak__submission__t_ab8d5a4fdfd3afac298d75d9593b716c7}{state}};        }
+\DoxyCodeLine{48 \} \mbox{\hyperlink{structmooshak__submission__t}{mooshak\_submission\_t}};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{55 \mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *\mbox{\hyperlink{libmooshak_8h_a00d1a0f7f08d0d6494aad063e584d030}{mooshak\_init}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *baseurl);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{62 \textcolor{keywordtype}{int} \mbox{\hyperlink{libmooshak_8h_afce09fa1f4f0a2834a4e070ada117470}{mooshak\_isinit}}(\textcolor{keyword}{const} \mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{68 \textcolor{keywordtype}{void} \mbox{\hyperlink{libmooshak_8h_adc3d720a00dad268bd6e89d5add9bc68}{mooshak\_deinit}}(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{75 \textcolor{keyword}{const} \textcolor{keywordtype}{char} *\mbox{\hyperlink{libmooshak_8h_a93bb02bcdeba9d2135761dfc9025bafa}{mooshak\_getlasterror}}(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{83 \textcolor{keywordtype}{char} **\mbox{\hyperlink{libmooshak_8h_a08dcc756be2dd05898b8c82d0e9e524d}{mooshak\_getcontests}}(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{93 \textcolor{keywordtype}{int} \mbox{\hyperlink{libmooshak_8h_ab63b59fc7fb3401f09e560a2ebb0405e}{mooshak\_login\_contest}}(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *user,}
+\DoxyCodeLine{94     \textcolor{keyword}{const} \textcolor{keywordtype}{char} *password, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *contest);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{101 \textcolor{keywordtype}{int} \mbox{\hyperlink{libmooshak_8h_a8d9d9ded727a81df8f8d78d840a17dc4}{mooshak\_logoff}}(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx);}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{109 \textcolor{keywordtype}{int} \mbox{\hyperlink{libmooshak_8h_ad00192faf5de4f16623de680d4be0910}{mooshak\_set\_sublist\_params}}(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx, \textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{117 \mbox{\hyperlink{structmooshak__submission__t}{mooshak\_submission\_t}} **\mbox{\hyperlink{libmooshak_8h_aee2ac861e8578aa3dbeb50422dd2ad51}{mooshak\_fetch\_sublist}}(\mbox{\hyperlink{structmooshak__ctx__s}{mooshak\_ctx\_t}} *ctx, \textcolor{keywordtype}{int} page);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_LIBMOOSHAK\_H */}\textcolor{preprocessor}{}}
 
 \end{DoxyCode}

@@ -1,0 +1,47 @@
+.TH "html_parser.c" 3 "Mon Oct 28 2024" "libmooshak" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+html_parser.c
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'html_parser\&.h'\fP
+.br
+\fC#include <string\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "char * \fBskip_spaces\fP (char *str)"
+.br
+.ti -1c
+.RI "void \fBhtml_preprocess\fP (char *html)"
+.br
+.ti -1c
+.RI "char * \fBhtml_ingest_starttag\fP (char *html, char *tagbuf, size_t tagbufsize)"
+.br
+.ti -1c
+.RI "char * \fBhtml_ingest_attribute\fP (char *html, char *keybuf, size_t keybufsize, char *valbuf, size_t valbufsize)"
+.br
+.ti -1c
+.RI "char * \fBhtml_ingest_contents\fP (char *html, char *contbuf, size_t contbufsize)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "char * html_ingest_attribute (char * html, char * keybuf, size_t keybufsize, char * valbuf, size_t valbufsize)"
+
+.SS "char * html_ingest_contents (char * html, char * contbuf, size_t contbufsize)"
+
+.SS "char * html_ingest_starttag (char * html, char * tagbuf, size_t tagbufsize)"
+
+.SS "void html_preprocess (char * html)"
+
+.SS "char * skip_spaces (char * str)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libmooshak from the source code\&.

@@ -18,43 +18,102 @@
 
 */
 
+/**
+ * @file libmooshak.h
+ * @brief libmooshak library header interface
+ */
+
 #ifndef _LIBMOOSHAK_H
 #define _LIBMOOSHAK_H
 
-/* Opaque context object */
+#include <time.h>
+
+/**
+ * libmooshak opaque context type to which all calls refer to
+ */
 typedef struct mooshak_ctx_s mooshak_ctx_t;
 
-/* Return types */
+/**
+ * Submission list item type
+ */
 typedef struct {
-    int id;
-    char *time;
-    char *country;
-    char *team;
-    char *problem;
-    char *language;
-    char *result;
-    char *state;
+    int id;             /**< Sequential ID */
+    time_t time;        /**< Submission time */
+    char *country;      /**< Submitter country */
+    char *team;         /**< Submitter team */
+    char *problem;      /**< Problem submit */
+    char *language;     /**< Submission language */
+    char *result;       /**< Test result */
+    char *state;        /**< Submission state */
 } mooshak_submission_t;
 
-/* libmooshak initilization - must call before anything else */
+/**
+ * @brief libmooshak initilization: must call before anything else
+ * @param baseurl URL of mooshak server (schema + hostname + mooshak root)
+ * @returns new libmooshak context (must be freed when unused with mooshak_deinit)
+ */
 mooshak_ctx_t *mooshak_init(const char *baseurl);
 
+/**
+ * @brief Check if libmooshak context is initialized
+ * @param ctx libmooshak context
+ * @returns non-zero on init, zero on no init
+ */
 int mooshak_isinit(const mooshak_ctx_t *ctx);
 
+/**
+ * @brief Free libmooshak context
+ * @param ctx libmooshak context
+ */
 void mooshak_deinit(mooshak_ctx_t *ctx);
 
+/**
+ * @brief Get last libmooshak error string
+ * @param ctx libmooshak context
+ * @returns inmutable C-string describing the last lib error
+ */
 const char *mooshak_getlasterror(mooshak_ctx_t *ctx);
 
-/* before login */
+/**
+ * @brief Get available contests from server, before login
+ * @param ctx libmooshak context
+ * @returns NULL-terminated array of NUL-terminated C-strings containing
+ * the names of the active available contests
+ */
 char **mooshak_getcontests(mooshak_ctx_t *ctx);
 
+/**
+ * @brief Login into a contest server with credentials
+ * @param ctx libmooshak context
+ * @param user login username
+ * @param password login password
+ * @param contest login into a contest (get with mooshak_getcontests)
+ * @returns non-zero on error
+ */
 int mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
     const char *password, const char *contest);
 
+/**
+ * @brief Logout of server, prevents hanging sessions in server
+ * @param ctx libmooshak context
+ * @returns non-zero on error
+ */
+int mooshak_logoff(mooshak_ctx_t *ctx);
+
+/**
+ * @brief Set submission listing parameters
+ * @param ctx libmooshak context
+ * @param n number of submissions to fetch
+ * @returns non-zero on error
+ */
 int mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n);
 
+/**
+ * @brief Fetch submission list
+ * @param ctx libmooshak context
+ * @param page listing page of n size (mooshak_set_sublist_params)
+ * from newest to oldest
+ */
 mooshak_submission_t **mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page);
-
-int mooshak_logoff(mooshak_ctx_t *ctx);
 
 #endif /* _LIBMOOSHAK_H */
