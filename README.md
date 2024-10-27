@@ -23,9 +23,12 @@ Sort of adhoc-documenting the mooshak endpoints and parameters
 
 ```
 get_endpoint: GET /~mooshak/cgi-bin/execute -> 302 for endpoint in Location header i.e. /~mooshak/cgi-bin/execute/1604585587794234
-login:        POST ${endpoint}?command=login&arguments=&contest=AED1_25_Practica&user=B117&password=******
+login:        POST ${endpoint}
+              command=login&arguments=&contest=AED1_25_Practica&user=B117&password=******
 get_ranking:  GET ${endpoint}?all_problems=true&page=0&problem=P003&type=ranking&all_teams=true&lines=200&time=5&command=listing
-get_listing:  GET ${endpoint}?all_problems=true&page=0&problem=P003&type=submissions&all_teams=true&lines=200&time=5&command=listing
+get_listing:  POST ${endpoint}
+              all_problems=true&page=0&problem=P003&type=submissions&all_teams=true&lines=200&time=5&command=listing
+              GET ${endpoint}?listing
 submit:       POST ${endpoint}
               MIME multipart (Content-Disposition: form-data;) {
                 # name: content

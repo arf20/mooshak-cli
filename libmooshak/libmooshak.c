@@ -54,18 +54,18 @@ mem_write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
     size_t realsize = size * nmemb;
     buff_t *mem = (buff_t*)userp;
     
-    char *ptr = mem->memory;
-    if (mem->off + realsize >= mem->size)
-        ptr = realloc(mem->memory, mem->size + realsize + 1);
-    if (!ptr) {
+    if (mem->off + realsize >= mem->size) {
+        mem->size += realsize + 1;
+        mem->memory = realloc(mem->memory, mem->size);
+    }
+        
+    if (!mem->memory) {
         /* out of memory! */
         printf("not enough memory (realloc returned NULL)\n");
         return 0;
     }
     
-    mem->memory = ptr;
     memcpy(mem->memory + mem->off, contents, realsize);
-    mem->size += realsize;
     mem->off += realsize;
     mem->memory[mem->off] = 0;
     
@@ -151,7 +151,6 @@ mooshak_init(const char *baseurl) {
     curl_easy_setopt(ctx->curl, CURLOPT_URL, baseurl);
 
     ctx->laststat = curl_easy_perform(ctx->curl);
-
     ctx->resbuff.off = 0; /* reset buff offset pointer */
 
     #ifdef _DEBUG_
