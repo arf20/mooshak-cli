@@ -121,6 +121,33 @@ strreplace(char *s, char f, char t) {
     }
 }
 
+int
+config_request(mooshak_ctx_t *ctx) {
+    char buff[1024];
+    snprintf(buff, 1024, "%s?config+language+en", ctx->endpoint);
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, buff);
+
+    ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0; /* reset buff offset pointer */
+
+    #ifdef _DEBUG_
+    long http_code;
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", buff, http_code);
+    #endif
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing config query";
+        return -1;
+    }
+
+    if (strstr(ctx->resbuff.memory, "Session expired")) {
+        ctx->lasterr = "Mooshak: Session expired";
+        return -1;
+    }
+
+    return 0;
+}
 
 mooshak_ctx_t *
 mooshak_init(const char *baseurl) {
@@ -202,23 +229,21 @@ mooshak_init(const char *baseurl) {
 
     #ifdef _DEBUG_
     printf("==endpoint: %s\n", ctx->endpoint);
-    #endif
+    #endif    
 
-    /* ===== config url discovery */
-    curl_easy_setopt(ctx->curl, CURLOPT_URL, (const char*)ctx->endpoint);
+
+
+    /* ===== config */
+    /* index request */
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, ctx->endpoint);
 
     ctx->laststat = curl_easy_perform(ctx->curl);
-    ctx->resbuff.off = 0; /* reset buff offset pointer */
+    ctx->resbuff.off = 0;
 
     #ifdef _DEBUG_
     curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
     printf("===GET %s -> %ld\n", ctx->endpoint, http_code);
-    #endif 
-
-    if (ctx->laststat != CURLE_OK) {
-        ctx->lasterr = "Error performing login page URL discovery";
-        return NULL;
-    }
+    #endif
 
     /* get config endpoint (refresh url) */
     char *config_url = get_refresh_url(ctx->resbuff.memory);
@@ -355,7 +380,7 @@ mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
     char loginquery[1024];
 
     snprintf(loginquery, 1024,
-        "command=login&arguments=&contest=%s&user=%s&password=%s",
+        "command=relogin&arguments=&contest=%s&user=%s&password=%s",
         contest, user, password);
 
     curl_easy_setopt(ctx->curl, CURLOPT_POST, 1);
@@ -384,7 +409,14 @@ mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
         return -1;
     }
 
+    if (strstr(ctx->resbuff.memory, "enough open sessions")) {
+        ctx->lasterr = "Got 'enough open sessions' message from server";
+        return -1;
+    }
+
     /* It's probably a success I think */
+
+    puts(ctx->resbuff.memory);
 
     return 0;
 }
@@ -425,8 +457,8 @@ mooshak_submission_t **
 mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page) {
     char listquery[1024];
     snprintf(listquery, 1024,
-        "%s?listing&page=%d",
-        ctx->endpoint, page);
+        "%s?listing",
+        ctx->endpoint);
 
     curl_easy_setopt(ctx->curl, CURLOPT_URL, listquery);
 

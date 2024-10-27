@@ -74,7 +74,7 @@ main(int argc, char **argv) {
 
         printf("Logged in.\n");
 
-        mooshak_set_sublist_params(ctx, 200);
+        //mooshak_set_sublist_params(ctx, 200);
 
         shell(ctx);
 
