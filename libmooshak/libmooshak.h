@@ -38,7 +38,7 @@ typedef struct mooshak_ctx_s mooshak_ctx_t;
  */
 typedef struct {
     int id;             /**< Sequential ID */
-    time_t time;        /**< Submission time */
+    char *time;         /**< Submission time (n)H:MM:SS */
     char *country;      /**< Submitter country */
     char *team;         /**< Submitter team */
     char *problem;      /**< Problem submit */

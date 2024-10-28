@@ -416,7 +416,27 @@ mooshak_login_contest(mooshak_ctx_t *ctx, const char *user,
 
     /* It's probably a success I think */
 
-    puts(ctx->resbuff.memory);
+    return 0;
+}
+
+int
+mooshak_logoff(mooshak_ctx_t *ctx) {
+    char query[1024];
+    snprintf(query, 1024, "%s?logout", ctx->endpoint);
+    curl_easy_setopt(ctx->curl, CURLOPT_URL, query);
+    ctx->laststat = curl_easy_perform(ctx->curl);
+    ctx->resbuff.off = 0;
+
+    #ifdef _DEBUG_
+    long http_code;
+    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
+    printf("===GET %s -> %ld\n", query, http_code);
+    #endif
+
+    if (ctx->laststat != CURLE_OK) {
+        ctx->lasterr = "Error performing logout request";
+        return -1;
+    }
 
     return 0;
 }
@@ -476,28 +496,60 @@ mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page) {
         return NULL;
     }
 
-    puts(ctx->resbuff.memory);
+    //puts(ctx->resbuff.memory);
 
-    return 0;
-}
+    char *html = ctx->resbuff.memory;
 
-int
-mooshak_logoff(mooshak_ctx_t *ctx) {
-    char query[1024];
-    snprintf(query, 1024, "%s?logout", ctx->endpoint);
-    curl_easy_setopt(ctx->curl, CURLOPT_URL, query);
-    ctx->laststat = curl_easy_perform(ctx->curl);
-    ctx->resbuff.off = 0;
+    html_preprocess(html);
 
-    #ifdef _DEBUG_
-    long http_code;
-    curl_easy_getinfo(ctx->curl, CURLINFO_RESPONSE_CODE, &http_code);
-    printf("===GET %s -> %ld\n", query, http_code);
-    #endif
+    char tag[16];
+    char contbuf[256];
+    int trcount = 0, tdcount = 0;
 
-    if (ctx->laststat != CURLE_OK) {
-        ctx->lasterr = "Error performing logout request";
-        return -1;
+    mooshak_submission_t *submissions = malloc(sizeof(mooshak_submission_t)*2);
+    int subsize = 2, subcount = 0;
+
+    while ((html = html_ingest_starttag(html, tag, 16))) {
+        if (strlen(tag) > 0) {
+            if (strcmp(tag, "tr") == 0) {
+                if (trcount == 0) {
+                    trcount++;
+                    tdcount = 0;
+                    continue;
+                }
+
+                /* allocate */
+                if (subcount + 1 > subsize - 1) {
+                    submissions = realloc(submissions, 
+                        (sizeof(mooshak_submission_t*) * (subcount + 1)));
+                    subsize = subcount + 1;
+                }
+
+                trcount++;
+                subcount++;
+                tdcount = 0;
+            }
+            else if (strcmp(tag, "td") == 0) {
+                if (trcount < 2) continue;
+                //if ((selectcount > 2) && (optioncount > 1)) {
+                    //html = html_ingest_attribute(html, attrkey, 16, value, 256);
+                    html = html_ingest_contents_toend(html, contbuf, tag, 256);
+
+                    printf("%d,%d %s\n", trcount, tdcount, contbuf);
+
+                    switch (tdcount) {
+                        case 0:
+                            submissions[subcount-1].id = atoi(contbuf + 3);
+                        break;
+                        case 1:
+                            submissions[subcount-1].time = strdup(contbuf);
+                        break;
+                    }
+
+                    tdcount++;
+                //}
+            }
+        }
     }
 
     return 0;

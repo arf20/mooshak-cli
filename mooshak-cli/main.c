@@ -61,6 +61,7 @@ main(int argc, char **argv) {
         if (!mooshak_isinit(ctx)) {
             fprintf(stderr, "Error initializing libmooshak: %s\n",
                 mooshak_getlasterror(ctx));
+            config_free(&cfg);
             mooshak_deinit(ctx);
             return 1;
         }
@@ -68,6 +69,7 @@ main(int argc, char **argv) {
         if (mooshak_login_contest(ctx, cfg.user, cfg.password, cfg.contest) < 0) {
             fprintf(stderr, "Error logging in: %s\n",
                 mooshak_getlasterror(ctx));
+            config_free(&cfg);
             mooshak_deinit(ctx);
             return 1;
         }

@@ -28,6 +28,8 @@ char *html_ingest_starttag(char *html, char *tagbuf, size_t tagbufsize);
 char *html_ingest_attribute(char *html, char *keybuf, size_t keybufsize,
     char *valbuf, size_t valbufsize);
 char *html_ingest_contents(char *html, char *contbuf, size_t contbufsize);
+char *html_ingest_contents_toend(char *html, char *contbuf, char *tag,
+    size_t contbufsize);
 
 #endif /* _HTML_PARSER_H */
 

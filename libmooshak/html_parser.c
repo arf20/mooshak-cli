@@ -22,6 +22,7 @@
 
 #include "html_parser.h"
 
+#include <stdio.h>
 #include <string.h>
 
 char *
@@ -67,7 +68,7 @@ html_ingest_starttag(char *html, char *tagbuf, size_t tagbufsize) {
     strncpy(tagbuf, start + 1, len);
     tagbuf[len] = '\0';
 
-    return start + len + 2;
+    return start + len + 1;
 }
 
 char *
@@ -111,6 +112,31 @@ html_ingest_contents(char *html, char *contbuf, size_t contbufsize) {
     char *begin = strchr(html, '>');
 
     char *end = strchr(html, '<');
+    if (end == NULL) return NULL;
+
+    if (begin && (begin < end))
+        html = begin + 1;
+
+    int len = end - html;
+    if (len + 1 >= contbufsize)
+        len = contbufsize - 1;
+    strncpy(contbuf, html, len);
+    contbuf[len] = '\0';
+
+    return html + len;
+}
+
+char *
+html_ingest_contents_toend(char *html, char *contbuf, char *tag,
+    size_t contbufsize)
+{
+    *contbuf = '\0';
+
+    char *begin = html;
+
+    char endtag[16];
+    snprintf(endtag, 16, "</%s>", tag);
+    char *end = strstr(html, endtag);
     if (end == NULL) return NULL;
 
     if (begin && (begin < end))
