@@ -9,7 +9,7 @@
 \item 
 int \mbox{\hyperlink{structmooshak__submission__t_a8300dfdc54f8760ea29845b16cf45781}{id}}
 \item 
-time\+\_\+t \mbox{\hyperlink{structmooshak__submission__t_a6a9bc6207f4f0d7ad7210dab16ef3b02}{time}}
+char $\ast$ \mbox{\hyperlink{structmooshak__submission__t_abf711ccc158509bb18cc781eafe7de1a}{time}}
 \item 
 char $\ast$ \mbox{\hyperlink{structmooshak__submission__t_ab014de465ed0e4f2625ef7aebf9d0129}{country}}
 \item 
@@ -18,6 +18,8 @@ char $\ast$ \mbox{\hyperlink{structmooshak__submission__t_a0644d172045ec79274a75
 char $\ast$ \mbox{\hyperlink{structmooshak__submission__t_a24c60a7f802b68558dff9297c24cf1e9}{problem}}
 \item 
 char $\ast$ \mbox{\hyperlink{structmooshak__submission__t_ad67babe46bc4683224b8541cdb3747d1}{language}}
+\item 
+int \mbox{\hyperlink{structmooshak__submission__t_a1ef9df8f0c5d9bc4be44b5dfe7320628}{attempt}}
 \item 
 char $\ast$ \mbox{\hyperlink{structmooshak__submission__t_a424061c9e4bbbf3b5e2a8c3d1bd1a45f}{result}}
 \item 
@@ -29,13 +31,19 @@ char $\ast$ \mbox{\hyperlink{structmooshak__submission__t_ab8d5a4fdfd3afac298d75
 Submission list item type 
 
 \doxysubsection{Field Documentation}
-\mbox{\Hypertarget{structmooshak__submission__t_ab014de465ed0e4f2625ef7aebf9d0129}\label{structmooshak__submission__t_ab014de465ed0e4f2625ef7aebf9d0129}} 
+\mbox{\Hypertarget{structmooshak__submission__t_a1ef9df8f0c5d9bc4be44b5dfe7320628}\label{structmooshak__submission__t_a1ef9df8f0c5d9bc4be44b5dfe7320628}} 
+\index{mooshak\_submission\_t@{mooshak\_submission\_t}!attempt@{attempt}}
+\index{attempt@{attempt}!mooshak\_submission\_t@{mooshak\_submission\_t}}
+\doxysubsubsection{\texorpdfstring{attempt}{attempt}}
+{\footnotesize\ttfamily int mooshak\+\_\+submission\+\_\+t\+::attempt}
+
+Attempt number for problem by team \mbox{\Hypertarget{structmooshak__submission__t_ab014de465ed0e4f2625ef7aebf9d0129}\label{structmooshak__submission__t_ab014de465ed0e4f2625ef7aebf9d0129}} 
 \index{mooshak\_submission\_t@{mooshak\_submission\_t}!country@{country}}
 \index{country@{country}!mooshak\_submission\_t@{mooshak\_submission\_t}}
 \doxysubsubsection{\texorpdfstring{country}{country}}
 {\footnotesize\ttfamily char$\ast$ mooshak\+\_\+submission\+\_\+t\+::country}
 
-Submitter country \mbox{\Hypertarget{structmooshak__submission__t_a8300dfdc54f8760ea29845b16cf45781}\label{structmooshak__submission__t_a8300dfdc54f8760ea29845b16cf45781}} 
+Team country \mbox{\Hypertarget{structmooshak__submission__t_a8300dfdc54f8760ea29845b16cf45781}\label{structmooshak__submission__t_a8300dfdc54f8760ea29845b16cf45781}} 
 \index{mooshak\_submission\_t@{mooshak\_submission\_t}!id@{id}}
 \index{id@{id}!mooshak\_submission\_t@{mooshak\_submission\_t}}
 \doxysubsubsection{\texorpdfstring{id}{id}}
@@ -53,7 +61,7 @@ Submission language \mbox{\Hypertarget{structmooshak__submission__t_a24c60a7f802
 \doxysubsubsection{\texorpdfstring{problem}{problem}}
 {\footnotesize\ttfamily char$\ast$ mooshak\+\_\+submission\+\_\+t\+::problem}
 
-Problem submit \mbox{\Hypertarget{structmooshak__submission__t_a424061c9e4bbbf3b5e2a8c3d1bd1a45f}\label{structmooshak__submission__t_a424061c9e4bbbf3b5e2a8c3d1bd1a45f}} 
+Problem code \mbox{\Hypertarget{structmooshak__submission__t_a424061c9e4bbbf3b5e2a8c3d1bd1a45f}\label{structmooshak__submission__t_a424061c9e4bbbf3b5e2a8c3d1bd1a45f}} 
 \index{mooshak\_submission\_t@{mooshak\_submission\_t}!result@{result}}
 \index{result@{result}!mooshak\_submission\_t@{mooshak\_submission\_t}}
 \doxysubsubsection{\texorpdfstring{result}{result}}
@@ -71,13 +79,13 @@ Submission state \mbox{\Hypertarget{structmooshak__submission__t_a0644d172045ec7
 \doxysubsubsection{\texorpdfstring{team}{team}}
 {\footnotesize\ttfamily char$\ast$ mooshak\+\_\+submission\+\_\+t\+::team}
 
-Submitter team \mbox{\Hypertarget{structmooshak__submission__t_a6a9bc6207f4f0d7ad7210dab16ef3b02}\label{structmooshak__submission__t_a6a9bc6207f4f0d7ad7210dab16ef3b02}} 
+Team name \mbox{\Hypertarget{structmooshak__submission__t_abf711ccc158509bb18cc781eafe7de1a}\label{structmooshak__submission__t_abf711ccc158509bb18cc781eafe7de1a}} 
 \index{mooshak\_submission\_t@{mooshak\_submission\_t}!time@{time}}
 \index{time@{time}!mooshak\_submission\_t@{mooshak\_submission\_t}}
 \doxysubsubsection{\texorpdfstring{time}{time}}
-{\footnotesize\ttfamily time\+\_\+t mooshak\+\_\+submission\+\_\+t\+::time}
+{\footnotesize\ttfamily char$\ast$ mooshak\+\_\+submission\+\_\+t\+::time}
 
-Submission time 
+Submission time (n)H\+:\+MM\+:SS 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

@@ -8,6 +8,8 @@ html_parser.c
 .PP
 \fC#include 'html_parser\&.h'\fP
 .br
+\fC#include <stdio\&.h>\fP
+.br
 \fC#include <string\&.h>\fP
 .br
 
@@ -24,10 +26,16 @@ html_parser.c
 .RI "char * \fBhtml_ingest_starttag\fP (char *html, char *tagbuf, size_t tagbufsize)"
 .br
 .ti -1c
+.RI "char * \fBhtml_skip_whole_tag\fP (char *html)"
+.br
+.ti -1c
 .RI "char * \fBhtml_ingest_attribute\fP (char *html, char *keybuf, size_t keybufsize, char *valbuf, size_t valbufsize)"
 .br
 .ti -1c
 .RI "char * \fBhtml_ingest_contents\fP (char *html, char *contbuf, size_t contbufsize)"
+.br
+.ti -1c
+.RI "char * \fBhtml_ingest_contents_toend\fP (char *html, char *contbuf, char *tag, size_t contbufsize)"
 .br
 .in -1c
 .SH "Function Documentation"
@@ -36,9 +44,13 @@ html_parser.c
 
 .SS "char * html_ingest_contents (char * html, char * contbuf, size_t contbufsize)"
 
+.SS "char * html_ingest_contents_toend (char * html, char * contbuf, char * tag, size_t contbufsize)"
+
 .SS "char * html_ingest_starttag (char * html, char * tagbuf, size_t tagbufsize)"
 
 .SS "void html_preprocess (char * html)"
+
+.SS "char * html_skip_whole_tag (char * html)"
 
 .SS "char * skip_spaces (char * str)"
 

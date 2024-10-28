@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['language_0',['language',['../structmooshak__submission__t.html#ad67babe46bc4683224b8541cdb3747d1',1,'mooshak_submission_t']]],
-  ['lasterr_1',['lasterr',['../structmooshak__ctx__s.html#a6f45329c65a86380af369fd28e91071c',1,'mooshak_ctx_s']]],
-  ['laststat_2',['laststat',['../structmooshak__ctx__s.html#a98a5a17dd52d1835571903193910fbd0',1,'mooshak_ctx_s']]]
+  ['id_0',['id',['../structmooshak__submission__t.html#a8300dfdc54f8760ea29845b16cf45781',1,'mooshak_submission_t']]],
+  ['init_1',['init',['../structmooshak__ctx__s.html#a751c7ef82a9acfa0c2e0cf3147ac1688',1,'mooshak_ctx_s']]]
 ];

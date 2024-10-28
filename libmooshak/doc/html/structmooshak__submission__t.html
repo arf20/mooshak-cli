@@ -74,8 +74,8 @@ $(function() {
 Data Fields</h2></td></tr>
 <tr class="memitem:a8300dfdc54f8760ea29845b16cf45781"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmooshak__submission__t.html#a8300dfdc54f8760ea29845b16cf45781">id</a></td></tr>
 <tr class="separator:a8300dfdc54f8760ea29845b16cf45781"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a9bc6207f4f0d7ad7210dab16ef3b02"><td class="memItemLeft" align="right" valign="top">time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmooshak__submission__t.html#a6a9bc6207f4f0d7ad7210dab16ef3b02">time</a></td></tr>
-<tr class="separator:a6a9bc6207f4f0d7ad7210dab16ef3b02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf711ccc158509bb18cc781eafe7de1a"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmooshak__submission__t.html#abf711ccc158509bb18cc781eafe7de1a">time</a></td></tr>
+<tr class="separator:abf711ccc158509bb18cc781eafe7de1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab014de465ed0e4f2625ef7aebf9d0129"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmooshak__submission__t.html#ab014de465ed0e4f2625ef7aebf9d0129">country</a></td></tr>
 <tr class="separator:ab014de465ed0e4f2625ef7aebf9d0129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0644d172045ec79274a758627d564749"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmooshak__submission__t.html#a0644d172045ec79274a758627d564749">team</a></td></tr>
@@ -84,6 +84,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a24c60a7f802b68558dff9297c24cf1e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67babe46bc4683224b8541cdb3747d1"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmooshak__submission__t.html#ad67babe46bc4683224b8541cdb3747d1">language</a></td></tr>
 <tr class="separator:ad67babe46bc4683224b8541cdb3747d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef9df8f0c5d9bc4be44b5dfe7320628"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmooshak__submission__t.html#a1ef9df8f0c5d9bc4be44b5dfe7320628">attempt</a></td></tr>
+<tr class="separator:a1ef9df8f0c5d9bc4be44b5dfe7320628"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a424061c9e4bbbf3b5e2a8c3d1bd1a45f"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmooshak__submission__t.html#a424061c9e4bbbf3b5e2a8c3d1bd1a45f">result</a></td></tr>
 <tr class="separator:a424061c9e4bbbf3b5e2a8c3d1bd1a45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8d5a4fdfd3afac298d75d9593b716c7"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmooshak__submission__t.html#ab8d5a4fdfd3afac298d75d9593b716c7">state</a></td></tr>
@@ -92,6 +94,21 @@ Data Fields</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Submission list item type </p>
 </div><h2 class="groupheader">Field Documentation</h2>
+<a id="a1ef9df8f0c5d9bc4be44b5dfe7320628" name="a1ef9df8f0c5d9bc4be44b5dfe7320628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ef9df8f0c5d9bc4be44b5dfe7320628">&#9670;&nbsp;</a></span>attempt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int mooshak_submission_t::attempt</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Attempt number for problem by team </p>
+
+</div>
+</div>
 <a id="ab014de465ed0e4f2625ef7aebf9d0129" name="ab014de465ed0e4f2625ef7aebf9d0129"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab014de465ed0e4f2625ef7aebf9d0129">&#9670;&nbsp;</a></span>country</h2>
 
@@ -103,7 +120,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Submitter country </p>
+<p >Team country </p>
 
 </div>
 </div>
@@ -148,7 +165,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Problem submit </p>
+<p >Problem code </p>
 
 </div>
 </div>
@@ -193,22 +210,22 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Submitter team </p>
+<p >Team name </p>
 
 </div>
 </div>
-<a id="a6a9bc6207f4f0d7ad7210dab16ef3b02" name="a6a9bc6207f4f0d7ad7210dab16ef3b02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a9bc6207f4f0d7ad7210dab16ef3b02">&#9670;&nbsp;</a></span>time</h2>
+<a id="abf711ccc158509bb18cc781eafe7de1a" name="abf711ccc158509bb18cc781eafe7de1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf711ccc158509bb18cc781eafe7de1a">&#9670;&nbsp;</a></span>time</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">time_t mooshak_submission_t::time</td>
+          <td class="memname">char* mooshak_submission_t::time</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Submission time </p>
+<p >Submission time (n)H:MM:SS </p>
 
 </div>
 </div>

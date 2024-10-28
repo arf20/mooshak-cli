@@ -47,7 +47,21 @@ shell(mooshak_ctx_t *ctx) {
                 
             );
         } else if (strcmp(cmd, "l") == 0 || strcmp(cmd, "listsub") == 0) {
-            mooshak_fetch_sublist(ctx, 1);
+            mooshak_submission_t *subs = NULL;
+            int n = 0;
+            if ((n = mooshak_fetch_sublist(ctx, 1, &subs)) < 0) {
+                fprintf(stderr, "%s\n", mooshak_getlasterror(ctx));
+            }
+
+            printf(
+                "sid\ttime\tcountry\tteam\tproblem\tlanguage\tattempt\tresult\tstate\n"
+                "---\t----\t-------\t----\t-------\t--------\t-------\t------\t-----\n");
+            for (int i = 0; i < n; i++) {
+                printf("%d\t%s\t%s\t%s\t%s\t%s\t%d\t%s\t%s\n", subs[i].id,
+                    subs[i].time, subs[i].country, subs[i].team,
+                    subs[i].problem, subs[i].language, subs[i].attempt,
+                    subs[i].result, subs[i].state);
+            }
         } else if (strcmp(cmd, "q") == 0 || strcmp(cmd, "quit") == 0) {
             return 0;
         }  else {

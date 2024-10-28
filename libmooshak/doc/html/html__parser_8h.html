@@ -96,10 +96,14 @@ Functions</h2></td></tr>
 <tr class="separator:aea56585490ad84a137b976f0edc98191"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23736c13d3ba4e92e6e6c13a38ca145c"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="html__parser_8h.html#a23736c13d3ba4e92e6e6c13a38ca145c">html_ingest_starttag</a> (char *html, char *tagbuf, size_t tagbufsize)</td></tr>
 <tr class="separator:a23736c13d3ba4e92e6e6c13a38ca145c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68b45c1943de770bcecb70a7ab0b8e51"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="html__parser_8h.html#a68b45c1943de770bcecb70a7ab0b8e51">html_skip_whole_tag</a> (char *html)</td></tr>
+<tr class="separator:a68b45c1943de770bcecb70a7ab0b8e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51a79db0f24744cbc8c59ea0ba2b3c17"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="html__parser_8h.html#a51a79db0f24744cbc8c59ea0ba2b3c17">html_ingest_attribute</a> (char *html, char *keybuf, size_t keybufsize, char *valbuf, size_t valbufsize)</td></tr>
 <tr class="separator:a51a79db0f24744cbc8c59ea0ba2b3c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abedbc4cd7f0ea95b8978edc31047e28b"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="html__parser_8h.html#abedbc4cd7f0ea95b8978edc31047e28b">html_ingest_contents</a> (char *html, char *contbuf, size_t contbufsize)</td></tr>
 <tr class="separator:abedbc4cd7f0ea95b8978edc31047e28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a101cb69d0adbcf310ff2858832ce7d45"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="html__parser_8h.html#a101cb69d0adbcf310ff2858832ce7d45">html_ingest_contents_toend</a> (char *html, char *contbuf, char *tag, size_t contbufsize)</td></tr>
+<tr class="separator:a101cb69d0adbcf310ff2858832ce7d45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a51a79db0f24744cbc8c59ea0ba2b3c17" name="a51a79db0f24744cbc8c59ea0ba2b3c17"></a>
@@ -182,6 +186,46 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a101cb69d0adbcf310ff2858832ce7d45" name="a101cb69d0adbcf310ff2858832ce7d45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a101cb69d0adbcf310ff2858832ce7d45">&#9670;&nbsp;</a></span>html_ingest_contents_toend()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * html_ingest_contents_toend </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>html</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>contbuf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>contbufsize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a23736c13d3ba4e92e6e6c13a38ca145c" name="a23736c13d3ba4e92e6e6c13a38ca145c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a23736c13d3ba4e92e6e6c13a38ca145c">&#9670;&nbsp;</a></span>html_ingest_starttag()</h2>
 
@@ -224,6 +268,24 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">void html_preprocess </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>html</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a68b45c1943de770bcecb70a7ab0b8e51" name="a68b45c1943de770bcecb70a7ab0b8e51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68b45c1943de770bcecb70a7ab0b8e51">&#9670;&nbsp;</a></span>html_skip_whole_tag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * html_skip_whole_tag </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>html</em></td><td>)</td>

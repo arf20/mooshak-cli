@@ -1,12 +1,14 @@
 \hypertarget{html__parser_8c}{}\doxysection{html\+\_\+parser.\+c File Reference}
 \label{html__parser_8c}\index{html\_parser.c@{html\_parser.c}}
 {\ttfamily \#include \char`\"{}html\+\_\+parser.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
 {\ttfamily \#include $<$string.\+h$>$}\newline
-Include dependency graph for html\+\_\+parser.\+c\+:\nopagebreak
+Include dependency graph for html\+\_\+parser.\+c\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=235pt]{html__parser_8c__incl}
+\includegraphics[width=303pt]{html__parser_8c__incl}
 \end{center}
 \end{figure}
 \doxysubsection*{Functions}
@@ -18,9 +20,13 @@ void \mbox{\hyperlink{html__parser_8c_aea56585490ad84a137b976f0edc98191}{html\+\
 \item 
 char $\ast$ \mbox{\hyperlink{html__parser_8c_a23736c13d3ba4e92e6e6c13a38ca145c}{html\+\_\+ingest\+\_\+starttag}} (char $\ast$html, char $\ast$tagbuf, size\+\_\+t tagbufsize)
 \item 
+char $\ast$ \mbox{\hyperlink{html__parser_8c_a68b45c1943de770bcecb70a7ab0b8e51}{html\+\_\+skip\+\_\+whole\+\_\+tag}} (char $\ast$html)
+\item 
 char $\ast$ \mbox{\hyperlink{html__parser_8c_a51a79db0f24744cbc8c59ea0ba2b3c17}{html\+\_\+ingest\+\_\+attribute}} (char $\ast$html, char $\ast$keybuf, size\+\_\+t keybufsize, char $\ast$valbuf, size\+\_\+t valbufsize)
 \item 
 char $\ast$ \mbox{\hyperlink{html__parser_8c_abedbc4cd7f0ea95b8978edc31047e28b}{html\+\_\+ingest\+\_\+contents}} (char $\ast$html, char $\ast$contbuf, size\+\_\+t contbufsize)
+\item 
+char $\ast$ \mbox{\hyperlink{html__parser_8c_a101cb69d0adbcf310ff2858832ce7d45}{html\+\_\+ingest\+\_\+contents\+\_\+toend}} (char $\ast$html, char $\ast$contbuf, char $\ast$tag, size\+\_\+t contbufsize)
 \end{DoxyCompactItemize}
 
 
@@ -37,6 +43,12 @@ char $\ast$ \mbox{\hyperlink{html__parser_8c_abedbc4cd7f0ea95b8978edc31047e28b}{
 \doxysubsubsection{\texorpdfstring{html\_ingest\_contents()}{html\_ingest\_contents()}}
 {\footnotesize\ttfamily char $\ast$ html\+\_\+ingest\+\_\+contents (\begin{DoxyParamCaption}\item[{char $\ast$}]{html,  }\item[{char $\ast$}]{contbuf,  }\item[{size\+\_\+t}]{contbufsize }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{html__parser_8c_a101cb69d0adbcf310ff2858832ce7d45}\label{html__parser_8c_a101cb69d0adbcf310ff2858832ce7d45}} 
+\index{html\_parser.c@{html\_parser.c}!html\_ingest\_contents\_toend@{html\_ingest\_contents\_toend}}
+\index{html\_ingest\_contents\_toend@{html\_ingest\_contents\_toend}!html\_parser.c@{html\_parser.c}}
+\doxysubsubsection{\texorpdfstring{html\_ingest\_contents\_toend()}{html\_ingest\_contents\_toend()}}
+{\footnotesize\ttfamily char $\ast$ html\+\_\+ingest\+\_\+contents\+\_\+toend (\begin{DoxyParamCaption}\item[{char $\ast$}]{html,  }\item[{char $\ast$}]{contbuf,  }\item[{char $\ast$}]{tag,  }\item[{size\+\_\+t}]{contbufsize }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{html__parser_8c_a23736c13d3ba4e92e6e6c13a38ca145c}\label{html__parser_8c_a23736c13d3ba4e92e6e6c13a38ca145c}} 
 \index{html\_parser.c@{html\_parser.c}!html\_ingest\_starttag@{html\_ingest\_starttag}}
 \index{html\_ingest\_starttag@{html\_ingest\_starttag}!html\_parser.c@{html\_parser.c}}
@@ -48,6 +60,12 @@ char $\ast$ \mbox{\hyperlink{html__parser_8c_abedbc4cd7f0ea95b8978edc31047e28b}{
 \index{html\_preprocess@{html\_preprocess}!html\_parser.c@{html\_parser.c}}
 \doxysubsubsection{\texorpdfstring{html\_preprocess()}{html\_preprocess()}}
 {\footnotesize\ttfamily void html\+\_\+preprocess (\begin{DoxyParamCaption}\item[{char $\ast$}]{html }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{html__parser_8c_a68b45c1943de770bcecb70a7ab0b8e51}\label{html__parser_8c_a68b45c1943de770bcecb70a7ab0b8e51}} 
+\index{html\_parser.c@{html\_parser.c}!html\_skip\_whole\_tag@{html\_skip\_whole\_tag}}
+\index{html\_skip\_whole\_tag@{html\_skip\_whole\_tag}!html\_parser.c@{html\_parser.c}}
+\doxysubsubsection{\texorpdfstring{html\_skip\_whole\_tag()}{html\_skip\_whole\_tag()}}
+{\footnotesize\ttfamily char $\ast$ html\+\_\+skip\+\_\+whole\+\_\+tag (\begin{DoxyParamCaption}\item[{char $\ast$}]{html }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{html__parser_8c_a3967de2b66d856887b2c6a2ac086ed87}\label{html__parser_8c_a3967de2b66d856887b2c6a2ac086ed87}} 
 \index{html\_parser.c@{html\_parser.c}!skip\_spaces@{skip\_spaces}}

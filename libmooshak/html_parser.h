@@ -25,6 +25,7 @@
 
 void html_preprocess(char *html);
 char *html_ingest_starttag(char *html, char *tagbuf, size_t tagbufsize);
+char *html_skip_whole_tag(char *html);
 char *html_ingest_attribute(char *html, char *keybuf, size_t keybufsize,
     char *valbuf, size_t valbufsize);
 char *html_ingest_contents(char *html, char *contbuf, size_t contbufsize);

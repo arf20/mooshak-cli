@@ -47,12 +47,12 @@ char $\ast$$\ast$ \mbox{\hyperlink{libmooshak_8c_a08dcc756be2dd05898b8c82d0e9e52
 \begin{DoxyCompactList}\small\item\em Get available contests from server, before login. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{libmooshak_8c_ab63b59fc7fb3401f09e560a2ebb0405e}{mooshak\+\_\+login\+\_\+contest}} (\mbox{\hyperlink{libmooshak_8h_a81914e394e87646c26df77ece4880fc0}{mooshak\+\_\+ctx\+\_\+t}} $\ast$ctx, const char $\ast$user, const char $\ast$password, const char $\ast$contest)
 \begin{DoxyCompactList}\small\item\em Login into a contest server with credentials. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{libmooshak_8c_a8d9d9ded727a81df8f8d78d840a17dc4}{mooshak\+\_\+logoff}} (\mbox{\hyperlink{libmooshak_8h_a81914e394e87646c26df77ece4880fc0}{mooshak\+\_\+ctx\+\_\+t}} $\ast$ctx)
+\begin{DoxyCompactList}\small\item\em Logout of server, prevents hanging sessions in server. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{libmooshak_8c_ad00192faf5de4f16623de680d4be0910}{mooshak\+\_\+set\+\_\+sublist\+\_\+params}} (\mbox{\hyperlink{libmooshak_8h_a81914e394e87646c26df77ece4880fc0}{mooshak\+\_\+ctx\+\_\+t}} $\ast$ctx, int n)
 \begin{DoxyCompactList}\small\item\em Set submission listing parameters. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{structmooshak__submission__t}{mooshak\+\_\+submission\+\_\+t}} $\ast$$\ast$ \mbox{\hyperlink{libmooshak_8c_aee2ac861e8578aa3dbeb50422dd2ad51}{mooshak\+\_\+fetch\+\_\+sublist}} (\mbox{\hyperlink{libmooshak_8h_a81914e394e87646c26df77ece4880fc0}{mooshak\+\_\+ctx\+\_\+t}} $\ast$ctx, int page)
-\begin{DoxyCompactList}\small\item\em Fetch submission list. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{libmooshak_8c_a8d9d9ded727a81df8f8d78d840a17dc4}{mooshak\+\_\+logoff}} (\mbox{\hyperlink{libmooshak_8h_a81914e394e87646c26df77ece4880fc0}{mooshak\+\_\+ctx\+\_\+t}} $\ast$ctx)
-\begin{DoxyCompactList}\small\item\em Logout of server, prevents hanging sessions in server. \end{DoxyCompactList}\end{DoxyCompactItemize}
+int \mbox{\hyperlink{libmooshak_8c_aded0ae8f8a871b7c4046a018089f8580}{mooshak\+\_\+fetch\+\_\+sublist}} (\mbox{\hyperlink{libmooshak_8h_a81914e394e87646c26df77ece4880fc0}{mooshak\+\_\+ctx\+\_\+t}} $\ast$ctx, int page, \mbox{\hyperlink{structmooshak__submission__t}{mooshak\+\_\+submission\+\_\+t}} $\ast$$\ast$list)
+\begin{DoxyCompactList}\small\item\em Fetch submission list. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
@@ -95,11 +95,11 @@ Free libmooshak context.
 {\em ctx} & libmooshak context \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{libmooshak_8c_aee2ac861e8578aa3dbeb50422dd2ad51}\label{libmooshak_8c_aee2ac861e8578aa3dbeb50422dd2ad51}} 
+\mbox{\Hypertarget{libmooshak_8c_aded0ae8f8a871b7c4046a018089f8580}\label{libmooshak_8c_aded0ae8f8a871b7c4046a018089f8580}} 
 \index{libmooshak.c@{libmooshak.c}!mooshak\_fetch\_sublist@{mooshak\_fetch\_sublist}}
 \index{mooshak\_fetch\_sublist@{mooshak\_fetch\_sublist}!libmooshak.c@{libmooshak.c}}
 \doxysubsubsection{\texorpdfstring{mooshak\_fetch\_sublist()}{mooshak\_fetch\_sublist()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structmooshak__submission__t}{mooshak\+\_\+submission\+\_\+t}} $\ast$$\ast$ mooshak\+\_\+fetch\+\_\+sublist (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{libmooshak_8h_a81914e394e87646c26df77ece4880fc0}{mooshak\+\_\+ctx\+\_\+t}} $\ast$}]{ctx,  }\item[{int}]{page }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int mooshak\+\_\+fetch\+\_\+sublist (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{libmooshak_8h_a81914e394e87646c26df77ece4880fc0}{mooshak\+\_\+ctx\+\_\+t}} $\ast$}]{ctx,  }\item[{int}]{page,  }\item[{\mbox{\hyperlink{structmooshak__submission__t}{mooshak\+\_\+submission\+\_\+t}} $\ast$$\ast$}]{list }\end{DoxyParamCaption})}
 
 
 

@@ -75,17 +75,17 @@ libmooshak.c
 .br
 .RI "Login into a contest server with credentials\&. "
 .ti -1c
+.RI "int \fBmooshak_logoff\fP (\fBmooshak_ctx_t\fP *ctx)"
+.br
+.RI "Logout of server, prevents hanging sessions in server\&. "
+.ti -1c
 .RI "int \fBmooshak_set_sublist_params\fP (\fBmooshak_ctx_t\fP *ctx, int n)"
 .br
 .RI "Set submission listing parameters\&. "
 .ti -1c
-.RI "\fBmooshak_submission_t\fP ** \fBmooshak_fetch_sublist\fP (\fBmooshak_ctx_t\fP *ctx, int page)"
+.RI "int \fBmooshak_fetch_sublist\fP (\fBmooshak_ctx_t\fP *ctx, int page, \fBmooshak_submission_t\fP **list)"
 .br
 .RI "Fetch submission list\&. "
-.ti -1c
-.RI "int \fBmooshak_logoff\fP (\fBmooshak_ctx_t\fP *ctx)"
-.br
-.RI "Logout of server, prevents hanging sessions in server\&. "
 .in -1c
 .SH "Function Documentation"
 .PP 
@@ -108,7 +108,7 @@ Free libmooshak context\&.
 .RE
 .PP
 
-.SS "\fBmooshak_submission_t\fP ** mooshak_fetch_sublist (\fBmooshak_ctx_t\fP * ctx, int page)"
+.SS "int mooshak_fetch_sublist (\fBmooshak_ctx_t\fP * ctx, int page, \fBmooshak_submission_t\fP ** list)"
 
 .PP
 Fetch submission list\&. 

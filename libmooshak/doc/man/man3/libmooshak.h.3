@@ -60,7 +60,7 @@ libmooshak.h \- libmooshak library header interface
 .br
 .RI "Set submission listing parameters\&. "
 .ti -1c
-.RI "\fBmooshak_submission_t\fP ** \fBmooshak_fetch_sublist\fP (\fBmooshak_ctx_t\fP *ctx, int page)"
+.RI "int \fBmooshak_fetch_sublist\fP (\fBmooshak_ctx_t\fP *ctx, int page, \fBmooshak_submission_t\fP **list)"
 .br
 .RI "Fetch submission list\&. "
 .in -1c
@@ -86,7 +86,7 @@ Free libmooshak context\&.
 .RE
 .PP
 
-.SS "\fBmooshak_submission_t\fP ** mooshak_fetch_sublist (\fBmooshak_ctx_t\fP * ctx, int page)"
+.SS "int mooshak_fetch_sublist (\fBmooshak_ctx_t\fP * ctx, int page, \fBmooshak_submission_t\fP ** list)"
 
 .PP
 Fetch submission list\&. 

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['size_0',['size',['../structbuff__t.html#a9ff7da7849f58ca64dde7b080867783b',1,'buff_t']]],
-  ['state_1',['state',['../structmooshak__submission__t.html#ab8d5a4fdfd3afac298d75d9593b716c7',1,'mooshak_submission_t']]]
+  ['resbuff_0',['resbuff',['../structmooshak__ctx__s.html#a22c97fea159b5d86e41df825a132b022',1,'mooshak_ctx_s']]],
+  ['result_1',['result',['../structmooshak__submission__t.html#a424061c9e4bbbf3b5e2a8c3d1bd1a45f',1,'mooshak_submission_t']]]
 ];

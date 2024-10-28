@@ -15,7 +15,7 @@ mooshak_submission_t
 .RI "int \fBid\fP"
 .br
 .ti -1c
-.RI "time_t \fBtime\fP"
+.RI "char * \fBtime\fP"
 .br
 .ti -1c
 .RI "char * \fBcountry\fP"
@@ -30,6 +30,9 @@ mooshak_submission_t
 .RI "char * \fBlanguage\fP"
 .br
 .ti -1c
+.RI "int \fBattempt\fP"
+.br
+.ti -1c
 .RI "char * \fBresult\fP"
 .br
 .ti -1c
@@ -41,22 +44,24 @@ mooshak_submission_t
 Submission list item type 
 .SH "Field Documentation"
 .PP 
+.SS "int mooshak_submission_t::attempt"
+Attempt number for problem by team 
 .SS "char* mooshak_submission_t::country"
-Submitter country 
+Team country 
 .SS "int mooshak_submission_t::id"
 Sequential ID 
 .SS "char* mooshak_submission_t::language"
 Submission language 
 .SS "char* mooshak_submission_t::problem"
-Problem submit 
+Problem code 
 .SS "char* mooshak_submission_t::result"
 Test result 
 .SS "char* mooshak_submission_t::state"
 Submission state 
 .SS "char* mooshak_submission_t::team"
-Submitter team 
-.SS "time_t mooshak_submission_t::time"
-Submission time 
+Team name 
+.SS "char* mooshak_submission_t::time"
+Submission time (n)H:MM:SS 
 
 .SH "Author"
 .PP 

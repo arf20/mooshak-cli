@@ -37,12 +37,13 @@ typedef struct mooshak_ctx_s mooshak_ctx_t;
  * Submission list item type
  */
 typedef struct {
-    int id;             /**< Sequential ID */
+    int  id;            /**< Sequential ID */
     char *time;         /**< Submission time (n)H:MM:SS */
-    char *country;      /**< Submitter country */
-    char *team;         /**< Submitter team */
-    char *problem;      /**< Problem submit */
+    char *country;      /**< Team country */
+    char *team;         /**< Team name */
+    char *problem;      /**< Problem code */
     char *language;     /**< Submission language */
+    int  attempt;       /**< Attempt number for problem by team */
     char *result;       /**< Test result */
     char *state;        /**< Submission state */
 } mooshak_submission_t;
@@ -114,6 +115,7 @@ int mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n);
  * @param page listing page of n size (mooshak_set_sublist_params)
  * from newest to oldest
  */
-mooshak_submission_t **mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page);
+int mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page,
+    mooshak_submission_t **list);
 
 #endif /* _LIBMOOSHAK_H */

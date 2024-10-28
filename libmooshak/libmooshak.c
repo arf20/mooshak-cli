@@ -473,8 +473,9 @@ mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n) {
     return 0;
 }
 
-mooshak_submission_t **
-mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page) {
+int
+mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page, mooshak_submission_t **list)
+{
     char listquery[1024];
     snprintf(listquery, 1024,
         "%s?listing",
@@ -493,10 +494,8 @@ mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page) {
 
     if (ctx->laststat != CURLE_OK) {
         ctx->lasterr = "Error performing sublist params query";
-        return NULL;
+        return -1;
     }
-
-    //puts(ctx->resbuff.memory);
 
     char *html = ctx->resbuff.memory;
 
@@ -521,7 +520,7 @@ mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page) {
                 /* allocate */
                 if (subcount + 1 > subsize - 1) {
                     submissions = realloc(submissions, 
-                        (sizeof(mooshak_submission_t*) * (subcount + 1)));
+                        sizeof(mooshak_submission_t) * (subcount + 1));
                     subsize = subcount + 1;
                 }
 
@@ -531,26 +530,55 @@ mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page) {
             }
             else if (strcmp(tag, "td") == 0) {
                 if (trcount < 2) continue;
-                //if ((selectcount > 2) && (optioncount > 1)) {
-                    //html = html_ingest_attribute(html, attrkey, 16, value, 256);
-                    html = html_ingest_contents_toend(html, contbuf, tag, 256);
 
-                    printf("%d,%d %s\n", trcount, tdcount, contbuf);
+                html = html_skip_whole_tag(html);
 
-                    switch (tdcount) {
-                        case 0:
-                            submissions[subcount-1].id = atoi(contbuf + 3);
-                        break;
-                        case 1:
-                            submissions[subcount-1].time = strdup(contbuf);
-                        break;
-                    }
+                switch (tdcount) {
+                    case 0:
+                        html = html_skip_whole_tag(html);
+                        html_ingest_contents(html, contbuf, 256);
+                        submissions[subcount-1].id = atoi(contbuf);
+                    break;
+                    case 1:
+                        html_ingest_contents(html, contbuf, 256);
+                        submissions[subcount-1].time = strdup(contbuf);
+                    break;
+                    case 2: 
+                        submissions[subcount-1].country = ""; //fixme
+                    break;
+                    case 3:
+                        html = html_skip_whole_tag(html);
+                        html_ingest_contents(html, contbuf, 256);
+                        submissions[subcount-1].team = strdup(contbuf);
+                    break;
+                    case 4:
+                        html = html_skip_whole_tag(html);
+                        html_ingest_contents(html, contbuf, 256);
+                        submissions[subcount-1].problem = strdup(contbuf);
+                    break;
+                    case 5:
+                        html_ingest_contents(html, contbuf, 256);
+                        submissions[subcount-1].language = strdup(contbuf);
+                    break;
+                    case 6: {
+                        html = html_ingest_contents(html, contbuf, 256);
+                        submissions[subcount-1].attempt = atoi(contbuf);
+                        html = html_skip_whole_tag(html);
+                        html_ingest_contents(html, contbuf, 256);
+                        submissions[subcount-1].result = strdup(contbuf);
+                    } break;
+                    case 7:
+                        html = html_skip_whole_tag(html);
+                        html_ingest_contents(html, contbuf, 256);
+                        submissions[subcount-1].state = strdup(contbuf);
+                    break;
+                }
 
-                    tdcount++;
-                //}
+                tdcount++;
             }
         }
     }
 
-    return 0;
+    *list = submissions;
+    return subcount;
 }

@@ -42,7 +42,7 @@ html_preprocess(char *html) {
 
 char *
 html_ingest_starttag(char *html, char *tagbuf, size_t tagbufsize) {
-    *tagbuf = '\0';
+    if (tagbuf) *tagbuf = '\0';
 
     char *start = strchr(html, '<');
     if (start == NULL) return NULL;
@@ -65,10 +65,17 @@ html_ingest_starttag(char *html, char *tagbuf, size_t tagbufsize) {
     if (len >= tagbufsize - 1)
         len = end - start - 3;
 
-    strncpy(tagbuf, start + 1, len);
-    tagbuf[len] = '\0';
+    if (tagbuf) {
+        strncpy(tagbuf, start + 1, len);
+        tagbuf[len] = '\0';
+    }
 
     return start + len + 1;
+}
+
+char *
+html_skip_whole_tag(char *html) {
+    return strchr(html, '>') + 1;
 }
 
 char *
@@ -80,13 +87,14 @@ html_ingest_attribute(char *html, char *keybuf, size_t keybufsize,
     char *end = strchr(html, '>');
     if (!end) return NULL;
     char *attrsep = strstr(html, "=\"");
-    if (!attrsep || (attrsep > end)) return end;
+    if (!attrsep || (attrsep > end)) return end + 1;
 
-
-    int keylen = attrsep - html;
-    if (keylen + 1 >= keybufsize) keylen = keybufsize - 1;
-    strncpy(keybuf, html, keylen);
-    keybuf[keylen] = '\0';
+    if (keybuf) {
+        int keylen = attrsep - html;
+        if (keylen + 1 >= keybufsize) keylen = keybufsize - 1;
+        strncpy(keybuf, html, keylen);
+        keybuf[keylen] = '\0';
+    }
 
     char *val = attrsep + 2;
 
@@ -96,11 +104,13 @@ html_ingest_attribute(char *html, char *keybuf, size_t keybufsize,
     
     int vallen = attrend - val;
 
-    if (vallen + 1 > valbufsize)
-        vallen = valbufsize - 1;
+    if (valbuf) {
+        if (vallen + 1 > valbufsize)
+            vallen = valbufsize - 1;
 
-    strncpy(valbuf, val, vallen);
-    valbuf[vallen] = '\0';
+        strncpy(valbuf, val, vallen);
+        valbuf[vallen] = '\0';
+    }
 
     return attrend + 1;
 }
