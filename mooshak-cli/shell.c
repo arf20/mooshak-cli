@@ -54,10 +54,13 @@ shell(mooshak_ctx_t *ctx) {
             }
 
             printf(
-                "sid\ttime\tcountry\tteam\tproblem\tlanguage\tattempt\tresult\tstate\n"
-                "---\t----\t-------\t----\t-------\t--------\t-------\t------\t-----\n");
+                "   sid time       country team                          "
+                "problem language    attempt result              state\n"
+                "--------------------------------------------------------"
+                "-----------------------------------------------------\n");
+
             for (int i = 0; i < n; i++) {
-                printf("%d\t%s\t%s\t%s\t%s\t%s\t%d\t%s\t%s\n", subs[i].id,
+                printf("%6d %-11s%-8s%-30s%-8s%-12s%7d %-20s%-5s\n", subs[i].id,
                     subs[i].time, subs[i].country, subs[i].team,
                     subs[i].problem, subs[i].language, subs[i].attempt,
                     subs[i].result, subs[i].state);
