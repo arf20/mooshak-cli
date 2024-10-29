@@ -442,12 +442,12 @@ mooshak_logoff(mooshak_ctx_t *ctx) {
 }
 
 int
-mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n) {
+mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n, int page) {
     char params[1024];
     snprintf(params, 1024,
-        "all_problems=true&page=0&problem=P004&type=submissions"
+        "all_problems=true&page=%d&problem=P004&type=submissions"
         "&all_teams=true&lines=%d&time=5&command=listing",
-        n);
+        page, n);
 
     curl_easy_setopt(ctx->curl, CURLOPT_POST, 1);
     curl_easy_setopt(ctx->curl, CURLOPT_URL, ctx->endpoint);
@@ -544,7 +544,7 @@ mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page, mooshak_submission_t **list)
                         submissions[subcount-1].time = strdup(contbuf);
                     break;
                     case 2: 
-                        submissions[subcount-1].country = ""; //fixme
+                        submissions[subcount-1].country = strdup(""); //fixme
                     break;
                     case 3:
                         html = html_skip_whole_tag(html);

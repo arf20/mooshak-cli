@@ -27,45 +27,105 @@
 #include "utils.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+int
+tokenize(char *str, char **tok, int size) {
+    int i = 0;
+    while (str) {
+        tok[i] = str;
+        str = strchr(str, ' ');
+        if (!str) {
+            i++;
+            break;
+        }
+        *str = '\0';
+        str++;
+        i++;
+    }
+    tok[i] = 0;
+    return i;
+}
+
+void
+free_submissions(mooshak_submission_t *subs, int n) {
+    for (int i = 0; i < n; i++) {
+        free(subs[i].time);
+        free(subs[i].country);
+        free(subs[i].team);
+        free(subs[i].problem);
+        free(subs[i].language);
+        free(subs[i].result);
+        free(subs[i].state);
+    }
+    free(subs);
+}
 
 int
 shell(mooshak_ctx_t *ctx) {
     char cmd[1024];
+    char *args[16];
 
     printf("Type `help` for a list of commands\n");
 
     while (1) {
         printf("mooshak> ");
-        get_line(cmd, 1024, stdin);
+        if (*get_line(cmd, 1024, stdin) == '\0') continue;
 
-        if (strcmp(cmd, "h") == 0 || strcmp(cmd, "help") == 0) {
+        tokenize(cmd, args, 16);
+
+        if (strcmp(args[0], "h") == 0 || strcmp(args[0], "help") == 0) {
             printf(
                 "  h|help:           print this message\n"
                 "  l|listsub:        list submissions\n"
                 "  q|quit:           logoff and quit\n"
                 
             );
-        } else if (strcmp(cmd, "l") == 0 || strcmp(cmd, "listsub") == 0) {
+        } else if (strcmp(args[0], "l") == 0 || strcmp(args[0], "listsub") == 0) {
+            int n_next = 0, n = 15, page = 0;
+            for (char **tok = args + 1; *tok != NULL; tok++) {
+                if (n_next) {
+                    n = atoi(*tok);
+                    n_next = 0;
+                    continue;
+                }
+
+                if (strcmp(*tok, "-n") == 0) {
+                    n_next = 1;
+                    continue;
+                }
+                else n_next = 0;
+
+                page = atoi(*tok);
+            }
+
+            if (mooshak_set_sublist_params(ctx, n, page) < 0) {
+                fprintf(stderr, "Error setting listing parameters: %s\n",
+                    mooshak_getlasterror(ctx));
+            }
+
             mooshak_submission_t *subs = NULL;
-            int n = 0;
             if ((n = mooshak_fetch_sublist(ctx, 1, &subs)) < 0) {
-                fprintf(stderr, "%s\n", mooshak_getlasterror(ctx));
+                fprintf(stderr, "Error fetching list: %s\n",
+                    mooshak_getlasterror(ctx));
             }
 
             printf(
-                "   sid time       country team                          "
-                "problem language    attempt result              state\n"
-                "--------------------------------------------------------"
-                "-----------------------------------------------------\n");
+                "   sid time        country team                               "
+                " problem language    attempt result              state\n"
+                "--------------------------------------------------------------"
+                "------------------------------------------------------\n");
 
             for (int i = 0; i < n; i++) {
-                printf("%6d %-11s%-8s%-30s%-8s%-12s%7d %-20s%-5s\n", subs[i].id,
+                printf("%6d %11s %-8s%-36s%-8s%-12s%7d %-20s%-5s\n", subs[i].id,
                     subs[i].time, subs[i].country, subs[i].team,
                     subs[i].problem, subs[i].language, subs[i].attempt,
                     subs[i].result, subs[i].state);
             }
-        } else if (strcmp(cmd, "q") == 0 || strcmp(cmd, "quit") == 0) {
+
+            free_submissions(subs, n);
+        } else if (strcmp(args[0], "q") == 0 || strcmp(args[0], "quit") == 0) {
             return 0;
         }  else {
             printf("?Unrecognized command\n");

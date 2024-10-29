@@ -105,9 +105,10 @@ int mooshak_logoff(mooshak_ctx_t *ctx);
  * @brief Set submission listing parameters
  * @param ctx libmooshak context
  * @param n number of submissions to fetch
+ * @param n page index to fetch (starts at 0)
  * @returns non-zero on error
  */
-int mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n);
+int mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n, int page);
 
 /**
  * @brief Fetch submission list
