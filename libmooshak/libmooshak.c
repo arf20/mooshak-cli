@@ -536,6 +536,8 @@ mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page, mooshak_submission_t **list)
                 switch (tdcount) {
                     case 0:
                         html = html_skip_whole_tag(html);
+                        if (*html == '<')
+                            html = html_skip_whole_tag(html);
                         html_ingest_contents(html, contbuf, 256);
                         submissions[subcount-1].id = atoi(contbuf);
                     break;
