@@ -37,16 +37,30 @@ typedef struct mooshak_ctx_s mooshak_ctx_t;
  * Submission list item type
  */
 typedef struct {
-    int  id;            /**< Sequential ID */
-    char *time;         /**< Submission time (n)H:MM:SS */
-    char *country;      /**< Team country */
-    char *team;         /**< Team name */
-    char *problem;      /**< Problem code */
-    char *language;     /**< Submission language */
-    int  attempt;       /**< Attempt number for problem by team */
-    char *result;       /**< Test result */
-    char *state;        /**< Submission state */
+    int     id;             /**< Sequential ID */
+    char *  time;           /**< Submission time (n)H:MM:SS */
+    char *  country;        /**< Team country */
+    char *  team;           /**< Team name */
+    char *  problem;        /**< Problem code */
+    char *  language;       /**< Submission language */
+    int     attempt;        /**< Attempt number for problem by team */
+    char *  result;         /**< Test result */
+    char *  state;          /**< Submission state */
 } mooshak_submission_t;
+
+/**
+ * Rank list item type
+ */
+typedef struct {
+    int     rank;           /**< Rank # */
+    char *  country;        /**< Team country */
+    char *  team;           /**< Team name */
+    char ** problems;       /**< NULL-terminated array of C-strings that stores
+    the tries of each problem in detail or somehing */
+    int     solved;         /**< Total number of problems solved */
+    int     points          /**< Points */
+} mooshak_rank_t;
+
 
 /**
  * @brief libmooshak initilization: must call before anything else
@@ -118,5 +132,14 @@ int mooshak_set_sublist_params(mooshak_ctx_t *ctx, int n, int page);
  */
 int mooshak_fetch_sublist(mooshak_ctx_t *ctx, int page,
     mooshak_submission_t **list);
+
+/**
+ * @brief Fetch ranking list
+ * @param ctx libmooshak context
+ * @param page ranking page of n size (mooshak_set_ranklist_params)
+ * from newest to oldest
+ */
+int mooshak_fetch_ranklist(mooshak_ctx_t *ctx, int page,
+    mooshak_rank_t **list);
 
 #endif /* _LIBMOOSHAK_H */
